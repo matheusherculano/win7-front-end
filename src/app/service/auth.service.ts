@@ -13,19 +13,17 @@ export class AuthService {
 
   public logar(ambiente: string, usuario: string, senha: string): Observable<any> {
     const url = `${environment.baseUrlBackend}/auth/login`
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const body = { usuario, senha };
 
-   return this.httpCliente.post<any>(url, body, { headers });
-
-    // return this.httpCliente.post(url, { usuario, senha }, { responseType: 'json' }).pipe(
-    //   map((data) => this.setTokenLocalStorage(data)),
-    //   catchError((err) => {
-    //     this.removerTokenLocalStorage();
-    //     // console.log("Erro aqui mlk", err);
-    //     throw err.error
-    //   })
-    // )
+    return this.httpCliente.post(url, { usuario, senha }, { responseType: 'text' }).pipe(
+      map((data) => {
+        console.log("a",data)
+        this.setTokenLocalStorage(data)
+      }),
+      catchError((err) => {
+        this.removerTokenLocalStorage();
+        throw err.error
+      })
+    )
   }
 
 
@@ -40,8 +38,7 @@ export class AuthService {
     localStorage.removeItem(environment.token);
   }
 
-  private setTokenLocalStorage(response: any): void {
-    const { type, token, _ } = response;
+  private setTokenLocalStorage(token: string): void {
     localStorage.setItem(environment.token, token);
   }
 }
