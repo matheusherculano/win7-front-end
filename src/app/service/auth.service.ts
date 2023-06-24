@@ -9,7 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  constructor(private httpCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient) {
+    
+   }
 
   public logar(ambiente: string, usuario: string, senha: string): Observable<any> {
     const url = `${environment.baseUrlBackend}/auth/login`
@@ -18,6 +20,29 @@ export class AuthService {
       map((data) => {
         console.log("a",data)
         this.setTokenLocalStorage(data)
+      }),
+      catchError((err) => {
+        this.removerTokenLocalStorage();
+        throw err.error
+      })
+    )
+  }
+
+  public getUserPrincipal(): Observable<any> {
+    const url = `${environment.baseUrlBackend}/auth/userprincipal`
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`
+    })
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json',
+    //   'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbGFpbmUiLCJpc3MiOiJXaW43IiwiaWQiOiJlbGFpbmUiLCJleHAiOjE2ODc1NDMwNjN9.d2k2UiyzPzZklDbp9qfxviBzz1yUSv6oahwdTRxrMi4`
+    // })
+
+    return this.httpCliente.get(url, { headers }).pipe(
+      map((data) => {
+        console.log("user principal",data)
       }),
       catchError((err) => {
         this.removerTokenLocalStorage();

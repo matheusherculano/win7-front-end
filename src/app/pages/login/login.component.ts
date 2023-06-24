@@ -29,6 +29,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     logar() {
         const { ambiente, usuario, senha } = this.formLogin.value;
 
+        // this.authService.getUserPrincipal().subscribe(resp=>{
+        // },err=>{});
+
         this.authService.logar(ambiente, usuario, senha).subscribe(
             resp => {
                 this.router.navigate(['dashboard']);
@@ -45,21 +48,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                 })
             });
 
-        // this.authService.logar(ambiente, usuario, senha).subscribe(
-        //     resp =>{
-        //         this.router.navigate(['dashboard']);
-        //     },
-        //     err =>{
-        //         Swal.fire({
-        //             title: 'Atenção!',
-        //             text: err,
-        //             icon: 'warning',
-        //             customClass: {
-        //                 confirmButton: 'btn btn-danger'
-        //             }
-        //         })
-        //     }
-        // )
     }
 
     ngOnInit() {

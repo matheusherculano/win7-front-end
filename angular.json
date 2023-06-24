@@ -86,10 +86,13 @@
               "buildOptimizer": true
             },
             "development": {
-             "buildOptimizer": false,
+              "buildOptimizer": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "namedChunks": true,
              "sourceMap": true,
              "optimization": {
-                "scripts": true,
+                "scripts": false,
                 "styles": {
                   "minify": false,
                   "inlineCritical": true
@@ -113,7 +116,7 @@
               "browserTarget": "demo:build:development"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development" 
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
