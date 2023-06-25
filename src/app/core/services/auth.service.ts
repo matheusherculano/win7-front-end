@@ -60,12 +60,6 @@ export class AuthService {
 
   isAutorizado() { }
  
-  public logout() { 
-    this.removerTokenLocalStorage();
-    this.router.navigate(['pages/login']);
-
-  }
-
   public getToken():string | null{
     return localStorage.getItem(environment.token);
   }
@@ -74,7 +68,7 @@ export class AuthService {
     this.roles = _.map(authorities, 'authority');
   }
 
-  private removerTokenLocalStorage(): void {
+  public removerTokenLocalStorage(): void {
     localStorage.removeItem(environment.token);
   }
 
