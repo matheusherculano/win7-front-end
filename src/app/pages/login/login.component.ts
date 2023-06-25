@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import Swal from 'sweetalert2';
 
 declare var $: any;

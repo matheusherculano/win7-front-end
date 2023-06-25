@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, catchError, delay, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -20,10 +20,11 @@ export class AuthService {
   public logar(ambiente: string, usuario: string, senha: string): Observable<any> {
     const url = `${environment.baseUrlBackend}/auth/login`
 
-    return this.httpCliente.post(url, { usuario, senha }, { responseType: 'text' }).pipe(
+    return this.httpCliente.post(url, { usuario, senha }, { responseType: 'text' }).pipe(delay(5000),
       map((data) => {
         console.log("a",data)
         this.setTokenLocalStorage(data)
+        
       }),
       catchError((err) => {
         this.removerTokenLocalStorage();
