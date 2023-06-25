@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -8,6 +9,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
+
+  public roles = [];
 
   constructor(private httpCliente: HttpClient) {
     
@@ -42,7 +45,8 @@ export class AuthService {
 
     return this.httpCliente.get(url, { headers }).pipe(
       map((data) => {
-        console.log("user principal",data)
+        this.setRolesInContext(data['authorities'])
+        return true;
       }),
       catchError((err) => {
         this.removerTokenLocalStorage();
@@ -57,6 +61,10 @@ export class AuthService {
 
   public getToken():string | null{
     return localStorage.getItem(environment.token);
+  }
+
+  private setRolesInContext(authorities){
+    this.roles = _.map(authorities, 'authority');
   }
 
   private removerTokenLocalStorage(): void {
