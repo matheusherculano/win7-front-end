@@ -84,6 +84,9 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     MatToolbarModule,
     MatTooltipModule,
     MatNativeDateModule
+  ],
+  declarations: [
+  
   ]
 })
 export class MaterialModule {}
