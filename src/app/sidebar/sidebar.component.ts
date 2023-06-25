@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
+import { AuthService } from '../../../.history/src/app/core/services/auth.service_20230625161908';
 
 declare const $: any;
 
@@ -115,6 +116,7 @@ export const ROUTES: RouteInfo[] = [{
 
 export class SidebarComponent implements OnInit {
     public menuItems: any[];
+    public nomeUsuario?: any;
     ps: any;
     isMobileMenu() {
         if ($(window).width() > 991) {
@@ -123,12 +125,21 @@ export class SidebarComponent implements OnInit {
         return true;
     };
 
+    constructor(private authService:AuthService){
+        
+    }
+
     ngOnInit() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
             const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
             this.ps = new PerfectScrollbar(elemSidebar);
         }
+
+        this.authService.getUserPrincipal().subscribe(resp=>{
+           this.nomeUsuario = this.authService.usuarioLogado.nome;
+        });
+       
     }
     updatePS(): void  {
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
@@ -148,4 +159,6 @@ export class SidebarComponent implements OnInit {
         parent.ariaExpanded = parent.ariaExpanded === "true" ? "false" : "true";
         child.style.height = child.style.height === "0px" || child.style.height === ""  ? "100%" : "0";
     }
+
+    
 }

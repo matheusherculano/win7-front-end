@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   public roles = [];
+  public usuarioLogado = {nome:"", usuario:""};
 
   constructor(private httpCliente: HttpClient, private router:Router) {
     
@@ -48,6 +49,8 @@ export class AuthService {
     return this.httpCliente.get(url, { headers }).pipe(
       map((data) => {
         this.setRolesInContext(data['authorities'])
+        this.usuarioLogado.usuario = data['username'];
+        this.usuarioLogado.nome = data['username'][0].toUpperCase() + data['username'].substring(1);
         return true;
       }),
       catchError((err) => {
