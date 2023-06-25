@@ -15,7 +15,10 @@ export class AuthGuard implements CanActivate {
       var hasAutorizacao = false;
      return this.authService.getUserPrincipal().toPromise().then(
       successRes=>{
-        return successRes;
+        return successRes; //return true pra liberar o acesso
+      }, err =>{
+        this.router.navigate(['pages/login'], { queryParams: { returnUrl: state.url } });
+        return false;
       }
      );
       

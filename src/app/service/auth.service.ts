@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -12,7 +13,7 @@ export class AuthService {
 
   public roles = [];
 
-  constructor(private httpCliente: HttpClient) {
+  constructor(private httpCliente: HttpClient, private router:Router) {
     
    }
 
@@ -57,7 +58,12 @@ export class AuthService {
 
 
   isAutorizado() { }
-  deslogar() { }
+ 
+  public logout() { 
+    this.removerTokenLocalStorage();
+    this.router.navigate(['pages/login']);
+
+  }
 
   public getToken():string | null{
     return localStorage.getItem(environment.token);
