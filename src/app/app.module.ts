@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -49,6 +49,8 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
 import { AuthGuard } from './core/guards/auth.guard';
+import { LoadingComponent } from './core/components/loading/loading.component';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   exports: [
@@ -105,10 +107,16 @@ export class MaterialModule {}
     declarations: [
         AppComponent,
         AdminLayoutComponent,
-        AuthLayoutComponent
+        AuthLayoutComponent,
+        LoadingComponent
     ],
     providers : [
-      MatNativeDateModule
+      MatNativeDateModule,
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: LoadingInterceptor,
+        multi: true,
+      }
     ],
     bootstrap:    [ AppComponent ]
 })

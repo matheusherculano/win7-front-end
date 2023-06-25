@@ -20,7 +20,7 @@ export class AuthService {
   public logar(ambiente: string, usuario: string, senha: string): Observable<any> {
     const url = `${environment.baseUrlBackend}/auth/login`
 
-    return this.httpCliente.post(url, { usuario, senha }, { responseType: 'text' }).pipe(delay(5000),
+    return this.httpCliente.post(url, { usuario, senha }, { responseType: 'text' }).pipe(
       map((data) => {
         console.log("a",data)
         this.setTokenLocalStorage(data)
