@@ -7,7 +7,7 @@ export const AdministradoresRoutes: Routes = [
 
       path: '',
       children: [ {
-        path: 'administradores',
+        path: '',
         component: AdministradoresComponent
     }]
 }
