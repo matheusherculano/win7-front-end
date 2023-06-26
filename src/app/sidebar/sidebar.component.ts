@@ -49,7 +49,8 @@ export const ROUTES: RouteInfo[] = [{
     //         {path: 'icons', title: 'Icons', ab:'I'},
     //         {path: 'typography', title: 'Typography', ab:'T'}
     //     ]
-    // },{
+    // },
+    // ,{
     //     path: '/forms',
     //     title: 'Forms',
     //     type: 'sub',
@@ -61,7 +62,8 @@ export const ROUTES: RouteInfo[] = [{
     //         {path: 'validation', title: 'Validation Forms', ab:'VF'},
     //         {path: 'wizard', title: 'Wizard', ab:'W'}
     //     ]
-    // },{
+    // }
+    // ,{
     //     path: '/tables',
     //     title: 'Tables',
     //     type: 'sub',
@@ -72,7 +74,8 @@ export const ROUTES: RouteInfo[] = [{
     //         {path: 'extended', title: 'Extended Tables', ab:'ET'},
     //         {path: 'datatables.net', title: 'Datatables.net', ab:'DT'}
     //     ]
-    // },{
+    // },
+    //{
     //     path: '/maps',
     //     title: 'Maps',
     //     type: 'sub',
