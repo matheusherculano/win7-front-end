@@ -7,7 +7,21 @@
             <div class="card-icon">
               <i class="material-icons">assignment</i>
             </div>
-            <h4 class="card-title">Gerenciar Administradores e Usuários</h4>
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="card-title">Gerenciar Administradores e Usuários</h4>
+              </div>
+              <div class="col-md-4 ">
+                <button
+                        mat-raised-button
+                        class="btn btn-warning btn-raised  float-right"
+                        data-toggle="modal"
+                        data-target="#myModal"
+                      >
+                        Cadastrar usuário
+                      </button>
+              </div>
+            </div>
           </div>
           <div class="card-body">
             <div class="toolbar">
@@ -53,7 +67,7 @@
                     <td class="text-right">
                       <button
                         mat-raised-button
-                        class="btn btn-warning btn-raised btn-round"
+                        class="btn btn-warning btn-raised btn-round btn-fab"
                         data-toggle="modal"
                         data-target="#myModal"
                       >
@@ -61,7 +75,7 @@
                       </button>
                       <button
                         mat-raised-button
-                        class="btn btn-danger btn-raised btn-round remove"
+                        class="btn btn-danger btn-raised btn-round btn-fab"
                         (click)="excluirUsuario(row)"
                       >
                         <i class="material-icons">delete_forever</i>
