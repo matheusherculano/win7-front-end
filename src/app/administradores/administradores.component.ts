@@ -87,6 +87,25 @@ confirmDestinationValidationType(e){
     return !form.get(field).valid && form.get(field).touched;
   }
 
+  cadastrar(){
+    this.form.markAllAsTouched();
+    if(this.form.valid){
+      alert('salvar')
+    }
+  }
+
+  limparModal(){
+    var campos = {
+      nomeCompleto:"",
+      usuario:"",
+      whatsapp:"",
+      email:"",
+      password:"",
+      confirmPassword:"",
+    }
+    this.form.patchValue(campos);
+  }
+
   public excluirUsuario(row) {
     console.log(row);
     swal

@@ -7,6 +7,7 @@ import { MaterialModule } from '../app.module';
 import { AdministradoresComponent } from './administradores.component';
 import { AdministradoresRoutes } from './administradores.routing';
 import { FieldErrorDisplayComponent } from '../forms/validationforms/field-error-display/field-error-display.component';
+import { BrMaskerModule } from 'br-mask';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FieldErrorDisplayComponent } from '../forms/validationforms/field-error
         MdModule,
         MaterialModule,
         ReactiveFormsModule,
-        FieldErrorDisplayComponent
+        FieldErrorDisplayComponent,
+        BrMaskerModule
     ],
     declarations: [AdministradoresComponent]
 })
