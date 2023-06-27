@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
+import { PasswordValidation } from "../forms/validationforms/password-validator.component";
+import { MyErrorStateMatcher } from "../forms/validationforms/validationforms.component";
 
 declare interface DataTable {
   headerRow: string[];
@@ -15,45 +17,123 @@ declare const $: any;
   templateUrl: "./administradores.component.html",
 })
 export class AdministradoresComponent implements OnInit, AfterViewInit {
-  public dataTable: DataTable;
-  public formUsuario: FormGroup;
+  dataTable: DataTable;
+  form: FormGroup;
+  validTextType: boolean = false;
+  validEmailType: boolean = false;
+  validNumberType: boolean = false;
+  validSourceType: boolean = false;
+  validDestinationType: boolean = false;
+  matcher = new MyErrorStateMatcher();
+  
+  constructor(private formBuilder: FormBuilder) {}
 
-  constructor(){
-    
+  emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
+
+
+  textValidationType(e) {
+    if (e) {
+      this.validTextType = true;
+    } else {
+      this.validTextType = false;
+    }
   }
 
-  public excluirUsuario(row){
-    console.log(row)
+  numberValidationType(e){
+    if (e) {
+        this.validNumberType = true;
+    }else{
+      this.validNumberType = false;
+    }
+}
+
+  emailValidationType(e){
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(String(e).toLowerCase())) {
+        this.validEmailType = true;
+    } else {
+      this.validEmailType = false;
+    }
+  }
+
+  sourceValidationType(e){
+    if (e) {
+        this.validSourceType = true;
+        this.form.patchValue({confirmPassword:""});
+    }else{
+      this.validSourceType = false;
+    }
+}
+confirmDestinationValidationType(e){
+  if (e) {
+      this.validDestinationType = true;
+  }else{
+    this.validDestinationType = false;
+  }
+}
+
+
+  displayFieldCss(form: FormGroup, field: string) {
+    return {
+      "has-error": this.isFieldValid(form, field),
+      "has-feedback": this.isFieldValid(form, field),
+    };
+  }
+
+  isFieldValid(form: FormGroup, field: string) {
+    return !form.get(field).valid && form.get(field).touched;
+  }
+
+  public excluirUsuario(row) {
+    console.log(row);
     swal
-        .fire({
-          title: "Você tem certeza que quer excluir o usuário "+row[0]+" ?",
-          text: "Essa ação não poderá ser revertida.",
-          icon: "warning",
-          showCancelButton: true,
-          customClass: {
-            confirmButton: "btn btn-success",
-            cancelButton: "btn btn-danger",
-          },
-          confirmButtonText: "Sim",
-          cancelButtonText: "Não",
-          buttonsStyling: false,
-        })
-        .then((result) => {
-          if (result.value) {
-            swal.fire({
-              title: "Excluido!",
-              text: row[0]+" foi excluido",
-              icon: "success",
-              customClass: {
-                confirmButton: "btn btn-success",
-              },
-              buttonsStyling: false,
-            });
-          }
-        });
+      .fire({
+        title: "Você tem certeza que quer excluir o usuário " + row[0] + " ?",
+        text: "Essa ação não poderá ser revertida.",
+        icon: "warning",
+        showCancelButton: true,
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+        buttonsStyling: false,
+      })
+      .then((result) => {
+        if (result.value) {
+          swal.fire({
+            title: "Excluido!",
+            text: row[0] + " foi excluido",
+            icon: "success",
+            customClass: {
+              confirmButton: "btn btn-success",
+            },
+            buttonsStyling: false,
+          });
+        }
+      });
   }
 
   ngOnInit() {
+
+    this.form = this.formBuilder.group({
+      // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
+      nomeCompleto: [null, Validators.required],
+      usuario: [null, Validators.required],
+      whatsapp: [null, Validators.required],
+      email: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+     }, {
+       validator: PasswordValidation.MatchPassword // your validation method
+   });
+
+
+
     var mainPanel = document.getElementsByClassName("main-panel")[0];
     $(".modal").on("shown.bs.modal", function () {
       mainPanel.classList.add("no-scroll");
@@ -112,7 +192,6 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
       },
     });
 
-    
     const table = $("#datatables").DataTable();
 
     // Edit record
@@ -137,8 +216,6 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
 
     // Delete a record
     table.on("click", ".remove1", function (e) {
-     
-
       // const $tr = $(this).closest("tr");
       // table.row($tr).remove().draw();
       e.preventDefault();

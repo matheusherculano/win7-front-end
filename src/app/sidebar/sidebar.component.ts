@@ -50,19 +50,19 @@ export const ROUTES: RouteInfo[] = [{
             {path: 'typography', title: 'Typography', ab:'T'}
         ]
     },
-    // ,{
-    //     path: '/forms',
-    //     title: 'Forms',
-    //     type: 'sub',
-    //     icontype: 'content_paste',
-    //     collapse: 'forms',
-    //     children: [
-    //         {path: 'regular', title: 'Regular Forms', ab:'RF'},
-    //         {path: 'extended', title: 'Extended Forms', ab:'EF'},
-    //         {path: 'validation', title: 'Validation Forms', ab:'VF'},
-    //         {path: 'wizard', title: 'Wizard', ab:'W'}
-    //     ]
-    // }
+    ,{
+        path: '/forms',
+        title: 'Forms',
+        type: 'sub',
+        icontype: 'content_paste',
+        collapse: 'forms',
+        children: [
+            {path: 'regular', title: 'Regular Forms', ab:'RF'},
+            {path: 'extended', title: 'Extended Forms', ab:'EF'},
+            {path: 'validation', title: 'Validation Forms', ab:'VF'},
+            {path: 'wizard', title: 'Wizard', ab:'W'}
+        ]
+    }
     // ,{
     //     path: '/tables',
     //     title: 'Tables',

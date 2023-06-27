@@ -6,6 +6,7 @@ import { MdModule } from '../md/md.module';
 import { MaterialModule } from '../app.module';
 import { AdministradoresComponent } from './administradores.component';
 import { AdministradoresRoutes } from './administradores.routing';
+import { FieldErrorDisplayComponent } from '../forms/validationforms/field-error-display/field-error-display.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { AdministradoresRoutes } from './administradores.routing';
         FormsModule,
         MdModule,
         MaterialModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FieldErrorDisplayComponent
     ],
     declarations: [AdministradoresComponent]
 })

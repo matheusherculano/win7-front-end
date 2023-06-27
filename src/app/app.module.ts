@@ -51,6 +51,7 @@ import { AppRoutes } from './app.routing';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { FieldErrorDisplayComponent } from './forms/validationforms/field-error-display/field-error-display.component';
 
 @NgModule({
   exports: [
@@ -100,18 +101,19 @@ export class MaterialModule {}
           useHash: true
         }),
         HttpClientModule,
-
         MaterialModule,
         SidebarModule,
         NavbarModule,
         FooterModule,
-        FixedpluginModule
+        FixedpluginModule,
+        FieldErrorDisplayComponent
     ],
     declarations: [
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
         LoadingComponent
+        
     ],
     providers : [
       MatNativeDateModule,
