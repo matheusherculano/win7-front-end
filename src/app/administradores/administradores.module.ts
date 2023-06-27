@@ -14,7 +14,8 @@ import { AdministradoresRoutes } from './administradores.routing';
         RouterModule.forChild(AdministradoresRoutes),
         FormsModule,
         MdModule,
-        MaterialModule
+        MaterialModule,
+        ReactiveFormsModule
     ],
     declarations: [AdministradoresComponent]
 })

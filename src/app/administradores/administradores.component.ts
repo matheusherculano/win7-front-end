@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 import swal from "sweetalert2";
 
 declare interface DataTable {
@@ -15,6 +16,11 @@ declare const $: any;
 })
 export class AdministradoresComponent implements OnInit, AfterViewInit {
   public dataTable: DataTable;
+  public formUsuario: FormGroup;
+
+  constructor(){
+    
+  }
 
   public excluirUsuario(row){
     console.log(row)
