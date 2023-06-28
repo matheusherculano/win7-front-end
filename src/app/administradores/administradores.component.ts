@@ -1,16 +1,22 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import swal from "sweetalert2";
 import { PasswordValidation } from "../forms/validationforms/password-validator.component";
 import { MyErrorStateMatcher } from "../forms/validationforms/validationforms.component";
 import { AdministradorService } from "src/app/core/services/administrador.service";
 import Swal from "sweetalert2";
+import * as _ from "lodash";
 
-declare interface DataTable {
-  headerRow: string[];
-  footerRow: string[];
-  dataRows: string[][];
-}
+// declare interface DataTable {
+//   headerRow: string[];
+//   footerRow: string[];
+//   dataRows: String[][];
+// }
 
 declare const $: any;
 
@@ -19,7 +25,7 @@ declare const $: any;
   templateUrl: "./administradores.component.html",
 })
 export class AdministradoresComponent implements OnInit, AfterViewInit {
-  dataTable: DataTable;
+  dataTable: {headerRow: any[], footerRow: any[], dataRows: any[]};
   form: FormGroup;
   validTextType: boolean = false;
   validEmailType: boolean = false;
@@ -27,24 +33,22 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
   validSourceType: boolean = false;
   validDestinationType: boolean = false;
   matcher = new MyErrorStateMatcher();
-  
-  constructor(private formBuilder: FormBuilder, private administradorService: AdministradorService) {}
 
-  usuarioFormControl = new FormControl('', [
-    Validators.required,
-  ]);
-  nomeCompletoFormControl = new FormControl('', [
-    Validators.required,
-  ]);
-  emailFormControl = new FormControl('', [
+  constructor(
+    private formBuilder: FormBuilder,
+    private administradorService: AdministradorService
+  ) {}
+
+  usuarioFormControl = new FormControl("", [Validators.required]);
+  nomeCompletoFormControl = new FormControl("", [Validators.required]);
+  emailFormControl = new FormControl("", [
     Validators.required,
     Validators.email,
   ]);
-  whatsappFormControl = new FormControl('', [
+  whatsappFormControl = new FormControl("", [
     Validators.required,
     Validators.minLength(13),
   ]);
-
 
   textValidationType(e) {
     if (e) {
@@ -54,39 +58,39 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     }
   }
 
-  numberValidationType(e){
+  numberValidationType(e) {
     if (e) {
-        this.validNumberType = true;
-    }else{
+      this.validNumberType = true;
+    } else {
       this.validNumberType = false;
     }
-}
+  }
 
-  emailValidationType(e){
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  emailValidationType(e) {
+    var re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(String(e).toLowerCase())) {
-        this.validEmailType = true;
+      this.validEmailType = true;
     } else {
       this.validEmailType = false;
     }
   }
 
-  sourceValidationType(e){
+  sourceValidationType(e) {
     if (e) {
-        this.validSourceType = true;
-        this.form.patchValue({confirmPassword:""});
-    }else{
+      this.validSourceType = true;
+      this.form.patchValue({ confirmPassword: "" });
+    } else {
       this.validSourceType = false;
     }
-}
-confirmDestinationValidationType(e){
-  if (e) {
-      this.validDestinationType = true;
-  }else{
-    this.validDestinationType = false;
   }
-}
-
+  confirmDestinationValidationType(e) {
+    if (e) {
+      this.validDestinationType = true;
+    } else {
+      this.validDestinationType = false;
+    }
+  }
 
   displayFieldCss(form: FormGroup, field: string) {
     return {
@@ -99,51 +103,52 @@ confirmDestinationValidationType(e){
     return !form.get(field).valid && form.get(field).touched;
   }
 
-  cadastrar(){
-    const dto = this.form.value
+  cadastrar() {
+    const dto = this.form.value;
     this.form.markAllAsTouched();
-    if(this.form.valid){
-     console.log(dto)
-     this.administradorService.cadastrarUsuario(dto).toPromise().then(
-      resp =>{
-        swal.fire({
-          title: "Tudo certo!",
-          text: "Usuário cadastrado!",
-          buttonsStyling: false,
-          customClass:{
-            confirmButton: "btn btn-success",
+    if (this.form.valid) {
+      console.log(dto);
+      this.administradorService
+        .cadastrarUsuario(dto)
+        .toPromise()
+        .then(
+          (resp) => {
+            swal.fire({
+              title: "Tudo certo!",
+              text: "Usuário cadastrado!",
+              buttonsStyling: false,
+              customClass: {
+                confirmButton: "btn btn-success",
+              },
+              icon: "success",
+            });
+
+            this.limparModal();
+            $(".modal").modal("hide");
           },
-          icon: "success"
-      });
-
-      this.limparModal();
-      $(".modal").modal('hide');
-
-      },
-      err =>{
-        Swal.fire({
-          title: "Atenção!",
-          text: err,
-          icon: "warning",
-          customClass: {
-            confirmButton: "btn btn-danger",
-          },
-        });
-      }
-
-     );
+          (err) => {
+            Swal.fire({
+              title: "Atenção!",
+              text: err,
+              icon: "warning",
+              customClass: {
+                confirmButton: "btn btn-danger",
+              },
+            });
+          }
+        );
     }
   }
 
-  limparModal(){
+  limparModal() {
     var campos = {
-      nomeCompleto:"",
-      usuario:"",
-      whatsapp:"",
-      email:"",
-      password:"",
-      confirmPassword:"",
-    }
+      nomeCompleto: "",
+      usuario: "",
+      whatsapp: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
     this.form.patchValue(campos);
   }
 
@@ -179,19 +184,28 @@ confirmDestinationValidationType(e){
   }
 
   ngOnInit() {
+    // this.carregarTabela();
 
-    this.form = this.formBuilder.group({
-      // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
-      nomeCompleto: [null, Validators.required],
-      usuario: [null, Validators.required],
-      whatsapp: [null, Validators.required],
-      email: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-     }, {
-       validator: PasswordValidation.MatchPassword // your validation method
-   });
-
+    this.form = this.formBuilder.group(
+      {
+        // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
+        nomeCompleto: [null, Validators.required],
+        usuario: [null, Validators.required],
+        whatsapp: [null, Validators.required],
+        email: [
+          null,
+          [
+            Validators.required,
+            Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+          ],
+        ],
+        password: ["", Validators.required],
+        confirmPassword: ["", Validators.required],
+      },
+      {
+        validator: PasswordValidation.MatchPassword, // your validation method
+      }
+    );
 
 
     var mainPanel = document.getElementsByClassName("main-panel")[0];
@@ -219,13 +233,46 @@ confirmDestinationValidationType(e){
         "Último acesso",
         "Actions",
       ],
-
       dataRows: [
         ["Airi Satou", "Andrew Mike", "Develop", "2013", "99,225", ""],
         ["Angelica Ramos", "John Doe", "Design", "2012", "89,241", "btn-round"],
         ["Ashton Cox", "Alex Mike", "Design", "2010", "92,144", "btn-simple"],
-      ],
+      ]
     };
+
+    this.carregarTabela();
+  }
+
+  private carregarTabela() {
+    //essa declaração carrega ai iniciar o pag sozinho
+    this.administradorService.getAllUsuariosByAmbiente().subscribe((data) => {
+      _.forEach(data, (item) => {
+        var row = [];
+        _.forEach(item, (value, key) => {
+          switch (key) {
+            case "nome":
+              row.push(String(value));
+              break;
+            case "usuario":
+              row.push(String(value));
+              break;
+            case "email":
+              row.push(String(value));
+              break;
+            case "whatsapp":
+              row.push(String(value));
+              break;
+            case "timeStamp":
+              row.push(String(value));
+              break;
+          }
+        });
+        row.push("");
+        this.dataTable.dataRows.push(row);
+      });
+
+      console.log(this.dataTable);
+    });
   }
 
   ngAfterViewInit() {

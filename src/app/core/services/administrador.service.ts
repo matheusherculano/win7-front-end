@@ -8,19 +8,40 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class AdministradorService {
+  sheaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.authService.getToken()}`
+  });
+
+  private getHeaders(){
+    var headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return {headers:headers};
+  }
 
   constructor(private httpCliente: HttpClient, private authService:AuthService) { }
+
+  public getAllUsuariosByAmbiente() {
+    const url = `${environment.baseUrlBackend}/usuario/all-in-ambiente`;
+
+    return this.httpCliente.get(url, this.getHeaders()).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError((err) => {
+        throw err.error
+      })
+    )
+  }
 
   public cadastrarUsuario(form){
     const url = `${environment.baseUrlBackend}/usuario`
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    })
-    
 
-    return this.httpCliente.post(url, this.buildDTO(form), {headers}).pipe(
+    return this.httpCliente.post(url, this.buildDTO(form), this.getHeaders()).pipe(
       map((data) => {
         
       }),
