@@ -41,10 +41,6 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     })
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbGFpbmUiLCJpc3MiOiJXaW43IiwiaWQiOiJlbGFpbmUiLCJleHAiOjE2ODc1NDMwNjN9.d2k2UiyzPzZklDbp9qfxviBzz1yUSv6oahwdTRxrMi4`
-    // })
 
     return this.httpCliente.get(url, { headers }).pipe(
       map((data) => {

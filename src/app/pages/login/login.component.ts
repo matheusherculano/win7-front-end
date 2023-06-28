@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(["dashboard"]);
       },
       (err) => {
-        console.log("2", err);
         Swal.fire({
           title: "Atenção!",
           text: err,

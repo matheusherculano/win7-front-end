@@ -98,9 +98,9 @@
                   [ngClass]="displayFieldCss(form, 'nomeCompleto')">
                   <input type="text" placeholder="Nome Completo" matInput id="nomeCompleto"
                     formControlName="nomeCompleto" />
-                  <app-field-error-display [displayError]="isFieldValid(form, 'nomeCompleto')"
-                    errorMsg="Campo obrigatório">
-                  </app-field-error-display>
+                    <mat-error *ngIf="nomeCompletoFormControl.hasError('required')">
+                      Campo obrigatório
+                    </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -116,7 +116,7 @@
                     Digite um E-mail válido
                   </mat-error>
                   <mat-error *ngIf="emailFormControl.hasError('required')">
-                    E-mail é obrigatório
+                    Campo obrigatório
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -128,9 +128,12 @@
                   <input type="text" name="whatsapp" placeholder="Whatsapp Business" matInput
                     (ngModelChange)="numberValidationType($event)" formControlName="whatsapp" 
                     [brmasker]="{phone: true}"/>
-                  <app-field-error-display [displayError]="isFieldValid(form, 'whatsapp')"
-                    errorMsg="Digite um Whatsapp!">
-                  </app-field-error-display>
+                    <mat-error *ngIf="whatsappFormControl.hasError('required')">
+                      Campo obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="whatsappFormControl.hasError('minLength')">
+                      Campo obrigatório 2
+                    </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -140,8 +143,9 @@
                   [ngClass]="{ 'has-success': validTextType === true }" [ngClass]="displayFieldCss(form, 'usuario')">
                   <input type="text" placeholder="Usuário" matInput id="usuario"
                     (ngModelChange)="textValidationType($event)" formControlName="usuario" />
-                  <app-field-error-display [displayError]="isFieldValid(form, 'usuario')" errorMsg="Campo obrigatório">
-                  </app-field-error-display>
+                    <mat-error *ngIf="usuarioFormControl.hasError('required')">
+                      Campo obrigatório
+                    </mat-error>
                 </mat-form-field>
               </div>
             </div>

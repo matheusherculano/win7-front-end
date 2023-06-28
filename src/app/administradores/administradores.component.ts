@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import swal from "sweetalert2";
 import { PasswordValidation } from "../forms/validationforms/password-validator.component";
 import { MyErrorStateMatcher } from "../forms/validationforms/validationforms.component";
+import { AdministradorService } from "src/app/core/services/administrador.service";
+import Swal from "sweetalert2";
 
 declare interface DataTable {
   headerRow: string[];
@@ -26,11 +28,21 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
   validDestinationType: boolean = false;
   matcher = new MyErrorStateMatcher();
   
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private administradorService: AdministradorService) {}
 
+  usuarioFormControl = new FormControl('', [
+    Validators.required,
+  ]);
+  nomeCompletoFormControl = new FormControl('', [
+    Validators.required,
+  ]);
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
+  ]);
+  whatsappFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(13),
   ]);
 
 
@@ -88,9 +100,38 @@ confirmDestinationValidationType(e){
   }
 
   cadastrar(){
+    const dto = this.form.value
     this.form.markAllAsTouched();
     if(this.form.valid){
-      alert('salvar')
+     console.log(dto)
+     this.administradorService.cadastrarUsuario(dto).toPromise().then(
+      resp =>{
+        swal.fire({
+          title: "Tudo certo!",
+          text: "Usuário cadastrado!",
+          buttonsStyling: false,
+          customClass:{
+            confirmButton: "btn btn-success",
+          },
+          icon: "success"
+      });
+
+      this.limparModal();
+      $(".modal").modal('hide');
+
+      },
+      err =>{
+        Swal.fire({
+          title: "Atenção!",
+          text: err,
+          icon: "warning",
+          customClass: {
+            confirmButton: "btn btn-danger",
+          },
+        });
+      }
+
+     );
     }
   }
 
