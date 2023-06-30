@@ -78,3 +78,7 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.mat-row:hover .mat-cell{
+    background-color: #e3e3e3;
+}

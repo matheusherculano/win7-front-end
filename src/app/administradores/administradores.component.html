@@ -67,11 +67,11 @@
                   </ng-container>
 
                   <!-- Ações Column -->
-                  <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef > Ações </mat-header-cell>
+                  <ng-container class="float-right" matColumnDef="actions">
+                    <mat-header-cell class="float-right" *matHeaderCellDef> Ações </mat-header-cell>
                     <mat-cell class="float-right" *matCellDef="let row">
-                      <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right" data-toggle="modal"
-                        data-target="#myModal">
+                      <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right"
+                        data-toggle="modal" data-target="#myModal">
                         <i class="material-icons">edit</i>
                       </button>
                       <button mat-raised-button class="btn btn-danger btn-raised btn-round btn-fab float-right"
