@@ -116,6 +116,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
         .toPromise()
         .then(
           (resp) => {
+           
             swal.fire({
               title: "Tudo certo!",
               text: "Usuário cadastrado!",
@@ -128,6 +129,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
 
             this.limparModal();
             $(".modal").modal("hide");
+            this.carregarTabela();
           },
           (err) => {
             Swal.fire({

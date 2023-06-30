@@ -54,7 +54,7 @@ export class AdministradorService {
   private buildDTO(form){
     var dto = {};
     dto['nome'] = form.nomeCompleto;
-    dto['usuario'] = form.usuario;
+    dto['login'] = form.login;
     dto['senha'] = form.password;
     dto['email'] = form.email;
     dto['whatsapp'] = form.whatsapp.replace(/[^0-9]+/g,''); //removendo mascara telefone;
