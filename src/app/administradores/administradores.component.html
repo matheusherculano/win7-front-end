@@ -18,56 +18,76 @@
                 </button>
               </div>
             </div>
+
+
           </div>
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
             </div>
             <div class="material-datatables">
-              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
-                width="100%" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th>{{ dataTable.headerRow[0] }}</th>
-                    <th>{{ dataTable.headerRow[1] }}</th>
-                    <th>{{ dataTable.headerRow[2] }}</th>
-                    <th>{{ dataTable.headerRow[3] }}</th>
-                    <th>{{ dataTable.headerRow[4] }}</th>
-                    <th class="disabled-sorting text-right">
-                      {{ dataTable.headerRow[5] }}
-                    </th>
-                  </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th>{{ dataTable.footerRow[0] }}</th>
-                    <th>{{ dataTable.footerRow[1] }}</th>
-                    <th>{{ dataTable.footerRow[2] }}</th>
-                    <th>{{ dataTable.footerRow[3] }}</th>
-                    <th>{{ dataTable.footerRow[4] }}</th>
-                    <th class="text-right">{{ dataTable.footerRow[5] }}</th>
-                  </tr>
-                </tfoot>
-                <tbody>
-                  <tr *ngFor="let row of dataTable.dataRows">
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>{{ row[4] }}</td>
-                    <td class="text-right">
-                      <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab" data-toggle="modal"
+              <div class="example-header">
+                <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+              </div>
+
+              <div class="example-container mat-elevation-z8">
+
+                <mat-table [dataSource]="dataSource" matSort>
+
+                  <!-- Nome -->
+                  <ng-container matColumnDef="nome">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Login Column -->
+                  <ng-container matColumnDef="login">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Login </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.login}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Email Column -->
+                  <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> email </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Whatsapp Column -->
+                  <ng-container matColumnDef="whatsapp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> whatsapp </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.whatsapp}} </mat-cell>
+                  </ng-container>
+
+                  <!-- TimeStamp Column -->
+                  <ng-container matColumnDef="timeStamp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> timeStamp </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.timeStamp}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Ações Column -->
+                  <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef > Ações </mat-header-cell>
+                    <mat-cell class="float-right" *matCellDef="let row">
+                      <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right" data-toggle="modal"
                         data-target="#myModal">
                         <i class="material-icons">edit</i>
                       </button>
-                      <button mat-raised-button class="btn btn-danger btn-raised btn-round btn-fab"
+                      <button mat-raised-button class="btn btn-danger btn-raised btn-round btn-fab float-right"
                         (click)="excluirUsuario(row)">
                         <i class="material-icons">delete_forever</i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      </button></mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;">
+                  </mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+
             </div>
           </div>
           <!-- end content-->
@@ -98,9 +118,9 @@
                   [ngClass]="displayFieldCss(form, 'nomeCompleto')">
                   <input type="text" placeholder="Nome Completo" matInput id="nomeCompleto"
                     formControlName="nomeCompleto" />
-                    <mat-error *ngIf="nomeCompletoFormControl.hasError('required')">
-                      Campo obrigatório
-                    </mat-error>
+                  <mat-error *ngIf="nomeCompletoFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -126,14 +146,14 @@
                 <mat-form-field class="example-full-width has-label"
                   [ngClass]="{ 'has-success': validNumberType === true }" [ngClass]="displayFieldCss(form, 'whatsapp')">
                   <input type="text" name="whatsapp" placeholder="Whatsapp Business" matInput
-                    (ngModelChange)="numberValidationType($event)" formControlName="whatsapp" 
-                    [brmasker]="{phone: true}"/>
-                    <mat-error *ngIf="whatsappFormControl.hasError('required')">
-                      Campo obrigatório
-                    </mat-error>
-                    <mat-error *ngIf="whatsappFormControl.hasError('minLength')">
-                      Campo obrigatório 2
-                    </mat-error>
+                    (ngModelChange)="numberValidationType($event)" formControlName="whatsapp"
+                    [brmasker]="{phone: true}" />
+                  <mat-error *ngIf="whatsappFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
+                  <mat-error *ngIf="whatsappFormControl.hasError('minLength')">
+                    Campo obrigatório 2
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -143,9 +163,9 @@
                   [ngClass]="{ 'has-success': validTextType === true }" [ngClass]="displayFieldCss(form, 'usuario')">
                   <input type="text" placeholder="Usuário" matInput id="usuario"
                     (ngModelChange)="textValidationType($event)" formControlName="usuario" />
-                    <mat-error *ngIf="usuarioFormControl.hasError('required')">
-                      Campo obrigatório
-                    </mat-error>
+                  <mat-error *ngIf="usuarioFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -173,12 +193,11 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button mat-raised-button type="button" class="btn btn-danger btn-link" 
-          data-dismiss="modal" (click)="limparModal()">
+          <button mat-raised-button type="button" class="btn btn-danger btn-link" data-dismiss="modal"
+            (click)="limparModal()">
             Cancelar
           </button>
-          <button mat-raised-button type="button" class="btn btn-success btn-link"
-          (click)="cadastrar()">
+          <button mat-raised-button type="button" class="btn btn-success btn-link" (click)="cadastrar()">
             Cadastrar
           </button>
         </div>

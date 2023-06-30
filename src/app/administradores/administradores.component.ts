@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -11,12 +11,9 @@ import { MyErrorStateMatcher } from "../forms/validationforms/validationforms.co
 import { AdministradorService } from "src/app/core/services/administrador.service";
 import Swal from "sweetalert2";
 import * as _ from "lodash";
-
-// declare interface DataTable {
-//   headerRow: string[];
-//   footerRow: string[];
-//   dataRows: String[][];
-// }
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
 
 declare const $: any;
 
@@ -24,8 +21,8 @@ declare const $: any;
   selector: "app-administradores",
   templateUrl: "./administradores.component.html",
 })
+
 export class AdministradoresComponent implements OnInit, AfterViewInit {
-  dataTable: {headerRow: any[], footerRow: any[], dataRows: any[]};
   form: FormGroup;
   validTextType: boolean = false;
   validEmailType: boolean = false;
@@ -33,11 +30,18 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
   validSourceType: boolean = false;
   validDestinationType: boolean = false;
   matcher = new MyErrorStateMatcher();
+  dataSource: MatTableDataSource<UserData>;
+  displayedColumns = ['nome', 'login', 'email', 'whatsapp', 'timeStamp', 'actions'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private formBuilder: FormBuilder,
     private administradorService: AdministradorService
-  ) {}
+  ) {
+    this.carregarTabela();
+  }
 
   usuarioFormControl = new FormControl("", [Validators.required]);
   nomeCompletoFormControl = new FormControl("", [Validators.required]);
@@ -107,7 +111,6 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     const dto = this.form.value;
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      console.log(dto);
       this.administradorService
         .cadastrarUsuario(dto)
         .toPromise()
@@ -183,8 +186,14 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
       });
   }
 
+  
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
   ngOnInit() {
-    // this.carregarTabela();
 
     this.form = this.formBuilder.group(
       {
@@ -215,119 +224,47 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     $(".modal").on("hidden.bs.modal", function () {
       mainPanel.classList.remove("no-scroll");
     });
+  }
 
-    this.dataTable = {
-      headerRow: [
-        "Nome",
-        "Login",
-        "E-mail",
-        "Whatsapp Business",
-        "Último acesso",
-        "Actions",
-      ],
-      footerRow: [
-        "Nome",
-        "Login",
-        "E-mail",
-        "Whatsapp Business",
-        "Último acesso",
-        "Actions",
-      ],
-      dataRows: [
-        ["Airi Satou", "Andrew Mike", "Develop", "2013", "99,225", ""],
-        ["Angelica Ramos", "John Doe", "Design", "2012", "89,241", "btn-round"],
-        ["Ashton Cox", "Alex Mike", "Design", "2010", "92,144", "btn-simple"],
-      ]
-    };
 
-    this.carregarTabela();
+  ngAfterViewInit() {
+    this.initPaginate();
+  }
+
+  private initPaginate(){
+    if(this.dataSource != undefined){
+      this.dataSource['paginator'] = this.paginator;
+      this.dataSource['sort'] = this.sort;
+    }
   }
 
   private carregarTabela() {
     //essa declaração carrega ai iniciar o pag sozinho
-    this.administradorService.getAllUsuariosByAmbiente().subscribe((data) => {
-      _.forEach(data, (item) => {
-        var row = [];
-        _.forEach(item, (value, key) => {
-          switch (key) {
-            case "nome":
-              row.push(String(value));
-              break;
-            case "usuario":
-              row.push(String(value));
-              break;
-            case "email":
-              row.push(String(value));
-              break;
-            case "whatsapp":
-              row.push(String(value));
-              break;
-            case "timeStamp":
-              row.push(String(value));
-              break;
-          }
-        });
-        row.push("");
-        this.dataTable.dataRows.push(row);
+     this.administradorService.getAllUsuariosByAmbiente().subscribe((data) => {
+      const users: UserData[] = [];
+      _.each(data, item =>{
+        users.push(dtoToUserData(item));
       });
-
-      console.log(this.dataTable);
+      this.dataSource = new MatTableDataSource(users);
+      this.initPaginate();
     });
   }
+}
 
-  ngAfterViewInit() {
-    $("#datatables").DataTable({
-      pagingType: "full_numbers",
-      lengthMenu: [
-        [10, 25, 50, -1],
-        [10, 25, 50, "All"],
-      ],
-      responsive: true,
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Pesquisar",
-        lengthMenu: "Mostrar _MENU_ registros por página",
-        zeroRecords: "Nenhum registro",
-        info: " _PAGE_ de _PAGES_",
-        infoEmpty: "Nenhum registro",
-        paginate: {
-          first: "Primeiros",
-          last: "Anterior",
-          next: "Proximo",
-          previous: "Últimos",
-        },
-      },
-    });
+function dtoToUserData(dto): UserData {
+  return {
+    nome: dto.nome,
+    login: dto.usuario,
+    email: dto.email,
+    whatsapp: dto.whatsapp,
+    timeStamp: dto.timeStamp
+  };
+}
 
-    const table = $("#datatables").DataTable();
-
-    // Edit record
-    table.on("click", ".edit", function (e) {
-      let $tr = $(this).closest("tr");
-      if ($($tr).hasClass("child")) {
-        $tr = $tr.prev(".parent");
-      }
-
-      var data = table.row($tr).data();
-      alert(
-        "You press on Row: " +
-          data[0] +
-          " " +
-          data[1] +
-          " " +
-          data[2] +
-          "'s row."
-      );
-      e.preventDefault();
-    });
-
-    // Delete a record
-    table.on("click", ".remove1", function (e) {
-      // const $tr = $(this).closest("tr");
-      // table.row($tr).remove().draw();
-      e.preventDefault();
-    });
-
-    $(".card .material-datatables label").addClass("form-group");
-  }
+export interface UserData {
+  nome: string;
+  login: string;
+  email: string;
+  whatsapp: string;
+  timeStamp: string;
 }

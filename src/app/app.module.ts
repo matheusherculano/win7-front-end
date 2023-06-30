@@ -48,11 +48,8 @@ import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
-import { AuthGuard } from './core/guards/auth.guard';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-import { FieldErrorDisplayComponent } from './forms/validationforms/field-error-display/field-error-display.component';
-import { BrMaskerModule } from 'br-mask';
 
 @NgModule({
   exports: [
@@ -107,7 +104,6 @@ export class MaterialModule {}
         NavbarModule,
         FooterModule,
         FixedpluginModule,
-        FieldErrorDisplayComponent
     ],
     declarations: [
         AppComponent,
