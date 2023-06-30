@@ -146,7 +146,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
   limparModal() {
     var campos = {
       nomeCompleto: "",
-      usuario: "",
+      login: "",
       whatsapp: "",
       email: "",
       password: "",
@@ -199,7 +199,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
       {
         // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
         nomeCompleto: [null, Validators.required],
-        usuario: [null, Validators.required],
+        login: [null, Validators.required],
         whatsapp: [null, Validators.required],
         email: [
           null,
@@ -254,7 +254,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
 function dtoToUserData(dto): UserData {
   return {
     nome: dto.nome,
-    login: dto.usuario,
+    login: dto.login,
     email: dto.email,
     whatsapp: dto.whatsapp,
     timeStamp: dto.timeStamp

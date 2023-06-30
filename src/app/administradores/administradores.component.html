@@ -50,20 +50,20 @@
 
                   <!-- Email Column -->
                   <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> email </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                   </ng-container>
 
                   <!-- Whatsapp Column -->
                   <ng-container matColumnDef="whatsapp">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> whatsapp </mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Whatsapp </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.whatsapp}} </mat-cell>
                   </ng-container>
 
                   <!-- TimeStamp Column -->
                   <ng-container matColumnDef="timeStamp">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> timeStamp </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.timeStamp | date:'medium'}} </mat-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> TimeStamp </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.timeStamp | date:"dd/MM/yyyy HH:mm"}} </mat-cell>
                   </ng-container>
 
                   <!-- Ações Column -->
@@ -160,9 +160,9 @@
             <div class="row">
               <div class="col-md-12">
                 <mat-form-field class="example-full-width has-label"
-                  [ngClass]="{ 'has-success': validTextType === true }" [ngClass]="displayFieldCss(form, 'usuario')">
-                  <input type="text" placeholder="Usuário" matInput id="usuario"
-                    (ngModelChange)="textValidationType($event)" formControlName="usuario" />
+                  [ngClass]="{ 'has-success': validTextType === true }" [ngClass]="displayFieldCss(form, 'login')">
+                  <input type="text" placeholder="Login" matInput id="login"
+                    (ngModelChange)="textValidationType($event)" formControlName="login" />
                   <mat-error *ngIf="usuarioFormControl.hasError('required')">
                     Campo obrigatório
                   </mat-error>
