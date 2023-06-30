@@ -28,7 +28,7 @@
             <div class="material-datatables">
               <div class="example-header">
                 <mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar">
                 </mat-form-field>
               </div>
 
@@ -63,7 +63,7 @@
                   <!-- TimeStamp Column -->
                   <ng-container matColumnDef="timeStamp">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> timeStamp </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.timeStamp}} </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.timeStamp | date:'medium'}} </mat-cell>
                   </ng-container>
 
                   <!-- Ações Column -->

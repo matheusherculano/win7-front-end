@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -50,6 +50,9 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import ptBr from '@angular/common/locales/pt';
+
+registerLocaleData(ptBr)
 
 @NgModule({
   exports: [
@@ -115,9 +118,10 @@ export class MaterialModule {}
     providers : [
       MatNativeDateModule,
       {
-        provide: HTTP_INTERCEPTORS,
+        provide: [HTTP_INTERCEPTORS, LOCALE_ID],
         useClass: LoadingInterceptor,
         multi: true,
+        useValue: 'pt'
       }
     ],
     bootstrap:    [ AppComponent ]
