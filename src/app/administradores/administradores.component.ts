@@ -29,8 +29,11 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
   validNumberType: boolean = false;
   validSourceType: boolean = false;
   validDestinationType: boolean = false;
+  serchField = "";
   matcher = new MyErrorStateMatcher();
   dataSource: MatTableDataSource<UserData>;
+  typeModal = null;
+  idIsEditing = null; // variavel para passar ID em caso de update ou null em create
   displayedColumns = ['nome', 'login', 'email', 'whatsapp', 'timeStamp', 'actions'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -107,29 +110,49 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     return !form.get(field).valid && form.get(field).touched;
   }
 
+  openCadastrarModal(){
+    this.typeModal = 'cadastrar';
+    this.idIsEditing = null;
+    this.limparModal();
+    $(".modal").modal("show");
+  }
+
+  openAlterarModal(row){
+    this.typeModal = 'alterar';
+    this.idIsEditing = row.id;
+    var campos = {
+      nomeCompleto: row.nome,
+      login: row.login,
+      whatsapp: row.whatsapp,
+      email: row.email,
+      password: "123456789101112", //passando valor aleatorio para preencher o campo, porem não deve ser persistido no update se não for alterado
+      confirmPassword: "123456789101112"
+    };
+    this.form.patchValue(campos);
+
+    $(".modal").modal("show");
+  }
+
+  alterarUsuario(){
+    this.cadastrarOrAtualizar("alterado");
+  }
+
   cadastrar() {
-    const dto = this.form.value;
+    this.cadastrarOrAtualizar("cadastrado");
+  }
+
+  private cadastrarOrAtualizar(typeText) {
+    var dto = this.form.value;
+    dto.id = this.idIsEditing;
     this.form.markAllAsTouched();
     if (this.form.valid) {
+
       this.administradorService
-        .cadastrarUsuario(dto)
+        .cadastrarOrAtualizarUsuario(dto)
         .toPromise()
         .then(
           (resp) => {
-           
-            swal.fire({
-              title: "Tudo certo!",
-              text: "Usuário cadastrado!",
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: "btn btn-success",
-              },
-              icon: "success",
-            });
-
-            this.limparModal();
-            $(".modal").modal("hide");
-            this.carregarTabela();
+            this.afterCreateOrUpdate("Tudo Certo!", "Usuário "+typeText+" com sucesso!");
           },
           (err) => {
             Swal.fire({
@@ -143,6 +166,23 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
           }
         );
     }
+  }
+
+ private afterCreateOrUpdate(title, text){
+    swal.fire({
+      title: title,
+      text: text,
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: "btn btn-success",
+      },
+      icon: "success",
+    });
+
+    this.serchField = "";
+    this.limparModal();
+    $(".modal").modal("hide");
+    this.carregarTabela();
   }
 
   limparModal() {
