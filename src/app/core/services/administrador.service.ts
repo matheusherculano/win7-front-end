@@ -37,6 +37,19 @@ export class AdministradorService {
     )
   }
 
+  public excluirUsuario(idUsuario){
+    const url = `${environment.baseUrlBackend}/usuario/delete/${idUsuario}`;
+
+    return this.httpCliente.get(url, this.getHeaders()).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError((err) => {
+        throw err.error
+      })
+    )
+  }
+
   public cadastrarUsuario(form){
     const url = `${environment.baseUrlBackend}/usuario`
 

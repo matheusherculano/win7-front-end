@@ -161,7 +161,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     console.log(row);
     swal
       .fire({
-        title: "Você tem certeza que quer excluir o usuário " + row[0] + " ?",
+        title: "Você tem certeza que quer excluir o usuário " + row.login + " ?",
         text: "Essa ação não poderá ser revertida.",
         icon: "warning",
         showCancelButton: true,
@@ -174,17 +174,34 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
         buttonsStyling: false,
       })
       .then((result) => {
-        if (result.value) {
-          swal.fire({
-            title: "Excluido!",
-            text: row[0] + " foi excluido",
-            icon: "success",
-            customClass: {
-              confirmButton: "btn btn-success",
-            },
-            buttonsStyling: false,
-          });
-        }
+        this.administradorService.excluirUsuario(row.id).subscribe(
+          sucess=>{
+              swal.fire({
+                title: "Excluido!",
+                text: row.login + " foi excluido",
+                icon: "success",
+                customClass: {
+                  confirmButton: "btn btn-success",
+                },
+                buttonsStyling: false,
+              });
+              this.carregarTabela();
+          },err=>{
+            swal.fire({
+              title: "Erro",
+              text: err,
+              icon: "warning",
+              customClass: {
+                confirmButton: "btn btn-danger",
+              },
+              buttonsStyling: false,
+            });
+          }
+        );
+
+
+
+        
       });
   }
 
@@ -255,6 +272,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
 
 function dtoToUserData(dto): UserData {
   return {
+    id:dto.id,
     nome: dto.nome,
     login: dto.login,
     email: dto.email,
@@ -264,6 +282,7 @@ function dtoToUserData(dto): UserData {
 }
 
 export interface UserData {
+  id:String;
   nome: string;
   login: string;
   email: string;
