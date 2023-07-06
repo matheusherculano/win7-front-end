@@ -35,6 +35,12 @@ export const ROUTES: RouteInfo[] = [{
         icontype: 'lock' 
     },
     {
+        path: '/clientes',
+        title: 'Clientes',
+        type: 'link',
+        icontype: 'person' 
+    },
+    {
         path: '/components',
         title: 'Components',
         type: 'sub',

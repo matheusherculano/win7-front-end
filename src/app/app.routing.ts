@@ -29,6 +29,13 @@ export const AppRoutes: Routes = [
           ),
       },
       {
+        path: "clientes",
+        loadChildren: () =>
+          import("./clientes/clientes.module").then(
+            (m) => m.ClientesModule
+          ),
+      },
+      {
         path: "components",
         loadChildren: () =>
           import("./components/components.module").then(

@@ -23,12 +23,13 @@
           <div class="card-body">
             <div class="toolbar">
               <!--        Here you can write extra buttons/actions for the toolbar              -->
+              <mat-form-field>
+                <input matInput [(ngModel)]="serchField" (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar">
+              </mat-form-field>
             </div>
             <div class="material-datatables">
               <div class="example-header">
-                <mat-form-field>
-                  <input matInput [(ngModel)]="serchField" (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar">
-                </mat-form-field>
+                
               </div>
 
               <div class="example-container mat-elevation-z8">

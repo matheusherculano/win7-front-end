@@ -1,0 +1,108 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title">Clientes da Agência</h4>
+                            </div>
+                            <div class="col-md-4">
+                                <button mat-raised-button class="btn btn-warning btn-raised float-right">
+                                    Cadastrar usuário
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="toolbar">
+                          <!--        Here you can write extra buttons/actions for the toolbar              -->
+
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="serchField" (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar">
+                          </mat-form-field>
+                        </div>
+                        <div class="material-datatables">
+                          <div class="example-header">
+                           
+                          </div>
+            
+                          <div class="example-container mat-elevation-z8">
+            
+                            <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"t>
+            
+                              <!-- Empresa -->
+                              <ng-container matColumnDef="empresa">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.nomeEmpresa}} </mat-cell>
+                              </ng-container>
+            
+                              <!-- Login Column -->
+                              <ng-container matColumnDef="login">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Login </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.login}} </mat-cell>
+                              </ng-container>
+            
+                              <!-- Ultimo acesso -->
+                              <ng-container matColumnDef="ultimoAcesso">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Último Acesso </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ultimoAcesso | date:"dd/MM/yyyy HH:mm"}} </mat-cell>
+                              </ng-container>
+            
+                              <!-- Adwords Column -->
+                              <ng-container matColumnDef="adwords">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Adwords </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.adwords}} </mat-cell>
+                              </ng-container>
+            
+                              <!-- Consultoria  -->
+                              <ng-container matColumnDef="consultoria">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Consultoria </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.consultoria == '1' ? 'Sim':'Não' }} </mat-cell>
+                              </ng-container>
+                              
+                              <!-- Whatsapp  -->
+                              <ng-container matColumnDef="whatsappAtivo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> WhatsApp Ativo </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.whatsappAtivo  == '1' ? 'Sim':'Não'}} </mat-cell>
+                              </ng-container>
+                              
+                              <!-- Telefone  -->
+                              <ng-container matColumnDef="telefone">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Telefone </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.telefone }} </mat-cell>
+                              </ng-container>
+            
+                              <!-- Ações Column -->
+                              <ng-container class="float-right" matColumnDef="actions">
+                                <mat-header-cell class="float-right" *matHeaderCellDef> Ações </mat-header-cell>
+                                <mat-cell class="float-right" *matCellDef="let row">
+                                  <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right"
+                                    (click)="openAlterarModal(row)">
+                                    <i class="material-icons">edit</i>
+                                  </button>
+                                  <button mat-raised-button class="btn btn-danger btn-raised btn-round btn-fab float-right"
+                                    (click)="excluirUsuario(row)">
+                                    <i class="material-icons">delete_forever</i>
+                                  </button></mat-cell>
+                              </ng-container>
+            
+                              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumns;">
+                              </mat-row>
+                            </mat-table>
+            
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                          </div>
+            
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

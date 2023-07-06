@@ -168,6 +168,7 @@ export class AdministradoresComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //botão de salvar/alterar da modal da tela
  private afterCreateOrUpdate(title, text){
     swal.fire({
       title: title,
