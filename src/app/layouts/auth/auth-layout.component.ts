@@ -21,7 +21,7 @@ export class AuthLayoutComponent implements OnInit {
 
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
     this._router = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      this.sidebarClose();
+      // this.sidebarClose();
       const $layer = document.getElementsByClassName('close-layer')[0];
       if ($layer) {
         $layer.remove();
@@ -91,11 +91,11 @@ export class AuthLayoutComponent implements OnInit {
 
       this.mobile_menu_visible = 0;
   };
-  sidebarToggle() {
-      if (this.sidebarVisible === false) {
-          this.sidebarOpen();
-      } else {
-          this.sidebarClose();
-      }
-  }
+  // sidebarToggle() {
+  //     if (this.sidebarVisible === false) {
+  //         this.sidebarOpen();
+  //     } else {
+  //         this.sidebarClose();
+  //     }
+  // }
 }

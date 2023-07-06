@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { APP_BASE_HREF } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -48,6 +48,11 @@ import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
+import { LoadingComponent } from './core/components/loading/loading.component';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import ptBr from '@angular/common/locales/pt';
+
+registerLocaleData(ptBr)
 
 @NgModule({
   exports: [
@@ -81,6 +86,9 @@ import { AppRoutes } from './app.routing';
     MatToolbarModule,
     MatTooltipModule,
     MatNativeDateModule
+  ],
+  declarations: [
+  
   ]
 })
 export class MaterialModule {}
@@ -94,20 +102,27 @@ export class MaterialModule {}
           useHash: true
         }),
         HttpClientModule,
-
         MaterialModule,
         SidebarModule,
         NavbarModule,
         FooterModule,
-        FixedpluginModule
+        FixedpluginModule,
     ],
     declarations: [
         AppComponent,
         AdminLayoutComponent,
-        AuthLayoutComponent
+        AuthLayoutComponent,
+        LoadingComponent
+        
     ],
     providers : [
-      MatNativeDateModule
+      MatNativeDateModule,
+      {
+        provide: [HTTP_INTERCEPTORS, LOCALE_ID],
+        useClass: LoadingInterceptor,
+        multi: true,
+        useValue: 'pt'
+      }
     ],
     bootstrap:    [ AppComponent ]
 })

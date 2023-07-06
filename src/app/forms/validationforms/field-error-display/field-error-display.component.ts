@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
+  standalone:true,
   selector: 'app-field-error-display',
   templateUrl: './field-error-display.component.html',
   styleUrls: ['./field-error-display.component.css']

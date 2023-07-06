@@ -1,0 +1,211 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">assignment</i>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="card-title">Gerenciar Administradores e Usuários</h4>
+              </div>
+              <div class="col-md-4">
+                <button mat-raised-button class="btn btn-warning btn-raised float-right" (click)="openCadastrarModal()">
+                  Cadastrar usuário
+                </button>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <!--        Here you can write extra buttons/actions for the toolbar              -->
+              <mat-form-field>
+                <input matInput [(ngModel)]="serchField" (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar">
+              </mat-form-field>
+            </div>
+            <div class="material-datatables">
+              <div class="example-header">
+                
+              </div>
+
+              <div class="example-container mat-elevation-z8">
+
+                <mat-table [dataSource]="dataSource" matSort>
+
+                  <!-- Nome -->
+                  <ng-container matColumnDef="nome">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Login Column -->
+                  <ng-container matColumnDef="login">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Login </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.login}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Email Column -->
+                  <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Whatsapp Column -->
+                  <ng-container matColumnDef="whatsapp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Whatsapp </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.whatsapp}} </mat-cell>
+                  </ng-container>
+
+                  <!-- TimeStamp Column -->
+                  <ng-container matColumnDef="timeStamp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> TimeStamp </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.timeStamp | date:"dd/MM/yyyy HH:mm"}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Ações Column -->
+                  <ng-container class="float-right" matColumnDef="actions">
+                    <mat-header-cell class="float-right" *matHeaderCellDef> Ações </mat-header-cell>
+                    <mat-cell class="float-right" *matCellDef="let row">
+                      <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right"
+                        (click)="openAlterarModal(row)">
+                        <i class="material-icons">edit</i>
+                      </button>
+                      <button mat-raised-button class="btn btn-danger btn-raised btn-round btn-fab float-right"
+                        (click)="excluirUsuario(row)">
+                        <i class="material-icons">delete_forever</i>
+                      </button></mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;">
+                  </mat-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+  </div>
+
+  <!-- Classic Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Modal title</h4>
+          <button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form" [formGroup]="form" action="" method="">
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width has-label"
+                  [ngClass]="{ 'has-success': validTextType === true }"
+                  [ngClass]="displayFieldCss(form, 'nomeCompleto')">
+                  <input type="text" placeholder="Nome Completo" matInput id="nomeCompleto"
+                    formControlName="nomeCompleto" />
+                  <mat-error *ngIf="nomeCompletoFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width" [ngClass]="{ 'has-success': validEmailType === true }">
+                  <input type="email" placeholder="E-mail" matInput [errorStateMatcher]="matcher"
+                    (ngModelChange)="emailValidationType($event)" formControlName="email" />
+                  <mat-error *ngIf="
+                      emailFormControl.hasError('email') &&
+                      !emailFormControl.hasError('required')
+                    ">
+                    Digite um E-mail válido
+                  </mat-error>
+                  <mat-error *ngIf="emailFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width has-label"
+                  [ngClass]="{ 'has-success': validNumberType === true }" [ngClass]="displayFieldCss(form, 'whatsapp')">
+                  <input type="text" name="whatsapp" placeholder="Whatsapp Business" matInput
+                    (ngModelChange)="numberValidationType($event)" formControlName="whatsapp"
+                    [brmasker]="{phone: true}" />
+                  <mat-error *ngIf="whatsappFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
+                  <mat-error *ngIf="whatsappFormControl.hasError('minLength')">
+                    Campo obrigatório 2
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width has-label"
+                  [ngClass]="{ 'has-success': validTextType === true }" [ngClass]="displayFieldCss(form, 'login')">
+                  <input type="text" placeholder="Login" matInput id="login"
+                    (ngModelChange)="textValidationType($event)" formControlName="login" />
+                  <mat-error *ngIf="usuarioFormControl.hasError('required')">
+                    Campo obrigatório
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width" [ngClass]="{ 'has-success': validSourceType === true }"
+                  [ngClass]="displayFieldCss(form, 'password')">
+                  <input type="password" placeholder="Senha" matInput name="idSource"
+                    (ngModelChange)="sourceValidationType($event)" formControlName="password" />
+                  <app-field-error-display [displayError]="isFieldValid(form, 'password')" errorMsg="Campo obrigatório">
+                  </app-field-error-display>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width" [ngClass]="{ 'has-success': validDestinationType === true }"
+                  [ngClass]="displayFieldCss(form, 'confirmPassword')">
+                  <input type="password" placeholder="Repetir a senha" matInput name="idDestination"
+                    (ngModelChange)="confirmDestinationValidationType($event)" formControlName="confirmPassword" />
+                  <app-field-error-display [displayError]="isFieldValid(form, 'confirmPassword')"
+                    errorMsg="As senhas devem ser iguais">
+                  </app-field-error-display>
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button mat-raised-button type="button" class="btn btn-danger btn-link" data-dismiss="modal"
+            (click)="limparModal()">
+            Cancelar
+          </button>
+          <button *ngIf="typeModal == 'alterar'" mat-raised-button type="button" class="btn btn-success btn-link" (click)="alterarUsuario()">
+            Atualizar
+          </button>
+          <button *ngIf="typeModal == 'cadastrar'" mat-raised-button type="button" class="btn btn-success btn-link" (click)="cadastrar()">
+            Cadastrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  End Modal -->
+</div>

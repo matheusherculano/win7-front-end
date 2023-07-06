@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrlBackend: 'http://localhost:9001',
+  token: 'token'
 };

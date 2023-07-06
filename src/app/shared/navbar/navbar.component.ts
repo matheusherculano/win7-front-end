@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AuthService } from 'src/app/core/services/auth.service';
 const misc: any = {
     navbar_menu_visible: 0,
     active_collapse: true,
@@ -27,7 +28,9 @@ export class NavbarComponent implements OnInit {
 
     @ViewChild('app-navbar-cmp', {static: false}) button: any;
 
-    constructor(location: Location, private renderer: Renderer2, private element: ElementRef, private router: Router,) {
+    constructor(location: Location, private renderer: Renderer2,
+         private element: ElementRef, private router: Router, 
+         private authService: AuthService) {
         this.location = location;
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
@@ -211,5 +214,9 @@ export class NavbarComponent implements OnInit {
     }
     getPath() {
         return this.location.prepareExternalUrl(this.location.path());
+    }
+
+    logout(){
+        this.authService.removerTokenLocalStorage();
     }
 }

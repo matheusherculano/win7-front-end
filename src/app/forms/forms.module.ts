@@ -23,14 +23,14 @@ import { FieldErrorDisplayComponent } from './validationforms/field-error-displa
     ReactiveFormsModule,
     NouisliderModule,
     TagInputModule,
-    MaterialModule
+    MaterialModule,
+    FieldErrorDisplayComponent
   ],
   declarations: [
       ExtendedFormsComponent,
       RegularFormsComponent,
       ValidationFormsComponent,
-      WizardComponent,
-      FieldErrorDisplayComponent
+      WizardComponent
   ]
 })
 
