@@ -4,6 +4,7 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { ClienteService } from "../core/services/cliente.service";
 import * as _ from "lodash";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-clientes",
@@ -27,8 +28,13 @@ export class ClientesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private clienteService:ClienteService) {
+  constructor(private clienteService:ClienteService, private router: Router) {
     this.carregarTabela()
+  }
+
+  redirectToClientMetrics(row){
+    console.log(row)
+    this.router.navigate(['/clientes', row.id]);
   }
 
   applyFilter(filterValue: string) {

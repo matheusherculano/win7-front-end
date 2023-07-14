@@ -33,4 +33,16 @@ export class ClienteService {
         })
       );
     }
+    public getClienteById(idCliente) {
+      const url = `${environment.baseUrlBackend}/cliente/get/${idCliente}`;
+  
+      return this.httpCliente.get(url, this.getHeaders()).pipe(
+        map((data) => {
+          return data;
+        }),
+        catchError((err) => {
+          throw err.error;
+        })
+      );
+    }
 }

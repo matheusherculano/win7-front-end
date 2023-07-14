@@ -8,9 +8,10 @@ import { FieldErrorDisplayComponent } from '../forms/validationforms/field-error
 import { BrMaskerModule } from 'br-mask';
 import { ClientesComponent } from './clientes.component';
 import { ClientesRoutes } from './clientes.routing';
+import { DadosClienteComponent } from './dados-cliente/dados-cliente.component';
 
 @NgModule({
-  declarations: [ClientesComponent],
+  declarations: [ClientesComponent, DadosClienteComponent],
   imports: [
     RouterModule.forChild(ClientesRoutes),
     CommonModule,

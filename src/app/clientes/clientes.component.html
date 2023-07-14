@@ -82,6 +82,10 @@
                                 <mat-header-cell class="float-right" *matHeaderCellDef> Ações </mat-header-cell>
                                 <mat-cell class="float-right" *matCellDef="let row">
                                   <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right"
+                                    (click)="redirectToClientMetrics(row)">
+                                    <i class="material-icons">query_stats</i>
+                                  </button>
+                                  <button mat-raised-button class="btn btn-warning btn-raised btn-round btn-fab float-right"
                                     (click)="openAlterarModal(row)">
                                     <i class="material-icons">edit</i>
                                   </button>
