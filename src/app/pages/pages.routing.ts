@@ -4,6 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { LockComponent } from './lock/lock.component';
 import { LoginComponent } from './login/login.component';
+import { ConsultaLivreComponent } from './consulta-livre/consulta-livre.component';
 
 export const PagesRoutes: Routes = [
 
@@ -13,6 +14,10 @@ export const PagesRoutes: Routes = [
             path: 'login',
             component: LoginComponent
         }, {
+            path: 'consulta-livre',
+            component: ConsultaLivreComponent
+        }, 
+         {
             path: 'lock',
             component: LockComponent
         }, {

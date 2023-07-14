@@ -3,6 +3,7 @@ import { Routes } from "@angular/router";
 import { AdminLayoutComponent } from "./layouts/admin/admin-layout.component";
 import { AuthLayoutComponent } from "./layouts/auth/auth-layout.component";
 import { AuthGuard } from "./core/guards/auth.guard";
+import { RelatorioClienteComponent } from "./relatorio-cliente/relatorio-cliente.component";
 
 export const AppRoutes: Routes = [
   {
@@ -91,6 +92,17 @@ export const AppRoutes: Routes = [
         path: "pages",
         loadChildren: () =>
           import("./pages/pages.module").then((m) => m.PagesModule),
+      },
+    ],
+  },
+  {
+    path: "",
+    component: RelatorioClienteComponent,
+    children: [
+      {
+        path: "public",
+        loadChildren: () =>
+          import("./relatorio-cliente/relatorio-cliente.module").then((m) => m.RelatorioClienteModule),
       },
     ],
   },

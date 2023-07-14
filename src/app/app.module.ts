@@ -51,6 +51,7 @@ import { AppRoutes } from './app.routing';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import ptBr from '@angular/common/locales/pt';
+import { RelatorioClienteComponent } from './relatorio-cliente/relatorio-cliente.component';
 
 registerLocaleData(ptBr)
 
