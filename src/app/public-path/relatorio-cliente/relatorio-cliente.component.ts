@@ -31,19 +31,20 @@ export class RelatorioClienteComponent implements OnInit {
 
   private carregarDados() {
     var idCliente = this.route.snapshot.params["idCliente"];
-    this.clienteService.getClienteById(idCliente).subscribe((data) => {
-      console.log(data);
-      this.cliente = buildCliente(data)
-
-      if (data["adwords"] != "") {
-        var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
-
-        this.clienteService.getMetrics(costumerId).subscribe((metric) => {
-          console.log("metric", metric);
-          this.cliente.metric = buildMetric(metric);;
-        });
-      }
-    });
+    if(idCliente != null){
+      this.clienteService.getClienteById(idCliente).subscribe((data) => {
+        this.cliente = buildCliente(data)
+  
+        if (data["adwords"] != "") {
+          var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
+  
+          this.clienteService.getMetrics(costumerId).subscribe((metric) => {
+            this.cliente.metric = buildMetric(metric);;
+          });
+        }
+      });
+    }
+    
   }
 }
 

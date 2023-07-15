@@ -118,10 +118,7 @@ export class MaterialModule {}
     providers : [
       MatNativeDateModule,
       {
-        provide: [HTTP_INTERCEPTORS, LOCALE_ID],
-        useClass: LoadingInterceptor,
-        multi: true,
-        useValue: 'pt'
+        provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true
       }
     ],
     bootstrap:    [ AppComponent ]
