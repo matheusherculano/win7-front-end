@@ -51,7 +51,7 @@ import { AppRoutes } from './app.routing';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import ptBr from '@angular/common/locales/pt';
-import { RelatorioClienteComponent } from './relatorio-cliente/relatorio-cliente.component';
+import { PublicPathModule } from './public-path/public-path.module';
 
 registerLocaleData(ptBr)
 
@@ -108,13 +108,13 @@ export class MaterialModule {}
         NavbarModule,
         FooterModule,
         FixedpluginModule,
+        PublicPathModule
     ],
     declarations: [
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
         LoadingComponent,
-        RelatorioClienteComponent
         
     ],
     providers : [

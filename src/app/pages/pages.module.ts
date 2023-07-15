@@ -11,7 +11,6 @@ import { RegisterComponent } from './register/register.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { LockComponent } from './lock/lock.component';
 import { LoginComponent } from './login/login.component';
-import { ConsultaLivreComponent } from './consulta-livre/consulta-livre.component';
 
 @NgModule({
   imports: [
@@ -25,8 +24,7 @@ import { ConsultaLivreComponent } from './consulta-livre/consulta-livre.componen
     LoginComponent,
     RegisterComponent,
     PricingComponent,
-    LockComponent,
-    ConsultaLivreComponent
+    LockComponent
   ]
 })
 

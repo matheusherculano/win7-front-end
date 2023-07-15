@@ -1,6 +1,0 @@
-.scrollable-div {
-    width: auto; /* Largura fixa da div */
-    height: 200px; /* Altura fixa da div */
-    overflow: auto; /* Habilita a barra de rolagem */
-    background-color: brown;
-  }
