@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteByIdGuard implements CanActivate {
+export class OnlyNumbersGuard implements CanActivate {
   constructor(private router: Router) { }
   canActivate(
     route: ActivatedRouteSnapshot,

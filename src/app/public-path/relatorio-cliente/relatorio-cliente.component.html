@@ -7,7 +7,7 @@
                         <div class="card-icon">
                             <i class="material-icons">insert_chart</i>
                         </div>
-                        <h4 class="card-title">Dados Gerais - Nome do Cliente</h4>
+                        <h4 class="card-title">Dados Gerais - <b>{{cliente.nomeEmpresa}}</b></h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -168,7 +168,7 @@
                                             <i class="material-icons">menu</i>
                                         </div>
                                         <p class="card-category">QUANTIDADE DE ANÚNCIOS</p>
-                                        <h3 class="card-title">184</h3>
+                                        <h3 class="card-title">{{cliente.metric.impression}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -181,7 +181,7 @@
                                             <i class="material-icons">open_in_browser</i>
                                         </div>
                                         <p class="card-category">ACESSOS AO SITE</p>
-                                        <h3 class="card-title">75.521</h3>
+                                        <h3 class="card-title">{{cliente.metric.clicks}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -194,7 +194,7 @@
                                             <i class="material-icons">trending_up</i>
                                         </div>
                                         <p class="card-category">% ACESSOS / ANÚNCIOS (CTR)</p>
-                                        <h3 class="card-title">+245</h3>
+                                        <h3 class="card-title"></h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -202,12 +202,12 @@
                             </div>
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                 <div class="card card-stats">
-                                    <div class="card-header card-header-primary card-header-icon">
+                                    <div class="card-header card-header-danger card-header-icon">
                                         <div class="card-icon">
                                             <i class="material-icons">close</i>
                                         </div>
                                         <p class="card-category">CLIQUES INVÁLIDOS</p>
-                                        <h3 class="card-title">$34,245</h3>
+                                        <h3 class="card-title">{{cliente.metric.invalidClicks}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -220,7 +220,7 @@
                                             <i class="material-icons">attach_money</i>
                                         </div>
                                         <p class="card-category">CUSTO TOTAL</p>
-                                        <h3 class="card-title">184</h3>
+                                        <h3 class="card-title">{{cliente.metric.custoTotal}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -233,7 +233,7 @@
                                             <i class="material-icons">attach_money</i>
                                         </div>
                                         <p class="card-category">CUSTO POR CLIQUE (CPC)</p>
-                                        <h3 class="card-title">75.521</h3>
+                                        <h3 class="card-title">{{cliente.metric.cpc}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>

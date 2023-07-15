@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ClientesComponent } from './clientes.component';
 import { DadosClienteComponent } from './dados-cliente/dados-cliente.component';
-import { ClienteByIdGuard } from '../core/guards/cliente-by-id.guard';
+import { OnlyNumbersGuard } from '../core/guards/only-numbers.guard';
 
 
 export const ClientesRoutes: Routes = [
@@ -15,7 +15,7 @@ export const ClientesRoutes: Routes = [
     {
       path: ':idCliente',
       component: DadosClienteComponent,
-      canActivate: [ClienteByIdGuard]
+      canActivate: [OnlyNumbersGuard] //guard para deixar somente numeros na pathvariable
   }]
 }
 ];

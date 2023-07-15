@@ -45,4 +45,17 @@ export class ClienteService {
         })
       );
     }
+    
+    public getMetrics(adwords) {
+      const url = `${environment.baseUrlBackend}/cliente/metrics/${adwords}`;
+  
+      return this.httpCliente.get(url, this.getHeaders()).pipe(
+        map((data) => {
+          return data;
+        }),
+        catchError((err) => {
+          throw err.error;
+        })
+      );
+    }
 }
