@@ -9,9 +9,11 @@ import { BrMaskerModule } from 'br-mask';
 import { ClientesComponent } from './clientes.component';
 import { ClientesRoutes } from './clientes.routing';
 import { DadosClienteComponent } from './dados-cliente/dados-cliente.component';
+import { RelatorioClienteComponent } from '../public-path/relatorio-cliente/relatorio-cliente.component';
+import { PublicPathModule } from '../public-path/public-path.module';
 
 @NgModule({
-  declarations: [ClientesComponent, DadosClienteComponent],
+  declarations: [ClientesComponent, DadosClienteComponent, RelatorioClienteComponent],
   imports: [
     RouterModule.forChild(ClientesRoutes),
     CommonModule,
@@ -20,7 +22,7 @@ import { DadosClienteComponent } from './dados-cliente/dados-cliente.component';
     MaterialModule,
     ReactiveFormsModule,
     FieldErrorDisplayComponent,
-    BrMaskerModule,
+    BrMaskerModule
   ],
 })
 export class ClientesModule {}

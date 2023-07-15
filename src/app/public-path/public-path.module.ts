@@ -1,19 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../app.module';
-import { RelatorioClienteComponent } from './relatorio-cliente/relatorio-cliente.component';
-import { RouterModule } from '@angular/router';
-import { PublicPathRoutes } from './public-path.routing';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RelatorioClienteComponent } from "./relatorio-cliente/relatorio-cliente.component";
+import { RouterModule } from "@angular/router";
+import { PublicPathRoutes } from "./public-path.routing";
 
 @NgModule({
-  declarations: [
-    RelatorioClienteComponent
-  ],
+  declarations: [RelatorioClienteComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(PublicPathRoutes)
-  ]
+    RouterModule.forChild(PublicPathRoutes),
+  ],
+  exports: [RelatorioClienteComponent],
 })
-export class PublicPathModule { }
+export class PublicPathModule {}

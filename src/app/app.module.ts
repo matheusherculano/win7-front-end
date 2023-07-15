@@ -51,7 +51,6 @@ import { AppRoutes } from './app.routing';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import ptBr from '@angular/common/locales/pt';
-import { PublicPathModule } from './public-path/public-path.module';
 
 registerLocaleData(ptBr)
 
@@ -107,8 +106,7 @@ export class MaterialModule {}
         SidebarModule,
         NavbarModule,
         FooterModule,
-        FixedpluginModule,
-        PublicPathModule
+        FixedpluginModule
     ],
     declarations: [
         AppComponent,
