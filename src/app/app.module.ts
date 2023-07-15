@@ -113,7 +113,8 @@ export class MaterialModule {}
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
-        LoadingComponent
+        LoadingComponent,
+        RelatorioClienteComponent
         
     ],
     providers : [

@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { RelatorioClienteRoutes } from './relatorio-cliente.routing';
 
 @NgModule({
-  declarations: [RelatorioClienteComponent],
+  declarations: [],
   imports: [
     RouterModule.forChild(RelatorioClienteRoutes),
     CommonModule,
