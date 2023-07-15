@@ -5,10 +5,11 @@ import { RouterModule } from "@angular/router";
 import { PublicPathRoutes } from "./public-path.routing";
 
 @NgModule({
-  declarations: [RelatorioClienteComponent],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(PublicPathRoutes),
+    RelatorioClienteComponent
   ],
   exports: [RelatorioClienteComponent],
 })

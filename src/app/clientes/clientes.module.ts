@@ -13,7 +13,7 @@ import { RelatorioClienteComponent } from '../public-path/relatorio-cliente/rela
 import { PublicPathModule } from '../public-path/public-path.module';
 
 @NgModule({
-  declarations: [ClientesComponent, DadosClienteComponent, RelatorioClienteComponent],
+  declarations: [ClientesComponent, DadosClienteComponent],
   imports: [
     RouterModule.forChild(ClientesRoutes),
     CommonModule,
@@ -22,7 +22,8 @@ import { PublicPathModule } from '../public-path/public-path.module';
     MaterialModule,
     ReactiveFormsModule,
     FieldErrorDisplayComponent,
-    BrMaskerModule
+    BrMaskerModule,
+    RelatorioClienteComponent
   ],
 })
 export class ClientesModule {}
