@@ -11,9 +11,9 @@
                             <div class="col-3">
                                 <mat-form-field>
                                     <mat-label>Período</mat-label>
-                                    <mat-select [(value)]="selectedColor">
-                                        <mat-option *ngFor="let food of foods" [value]="food.value">
-                                            {{food.viewValue}}
+                                    <mat-select [(value)]="periodoSelecionado">
+                                        <mat-option *ngFor="let item of periodoList" [value]="item.value">
+                                            {{item.label}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>

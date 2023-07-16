@@ -3,12 +3,14 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { ActivatedRoute } from "@angular/router";
+import * as _ from "lodash";
 import { MaterialModule } from "src/app/app.module";
 import { ClienteService } from "src/app/core/services/cliente.service";
+import { ElementosTelaService } from "src/app/core/services/elementos-tela.service";
 
-interface Food {
+interface ComboBox {
   value: string;
-  viewValue: string;
+  label: string;
 }
 @Component({
   standalone: true,
@@ -30,20 +32,18 @@ export class RelatorioClienteComponent implements OnInit {
       invalidClicks:""
     }
   };
-  selectedColor = null;
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
-  ];
+  periodoSelecionado = "TODAY";
+  periodoList: ComboBox[] = [];
 
   constructor(
     private clienteService: ClienteService,
+    private elementosTelaService: ElementosTelaService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.carregarDados();
+    this.carregarCombos();
   }
 
   private carregarDados() {
@@ -62,6 +62,18 @@ export class RelatorioClienteComponent implements OnInit {
       });
     }
     
+  }
+
+  private carregarCombos(){
+    this.elementosTelaService.getPeriodoAdsList().subscribe(data=>{
+      _.each(data, item=>{
+        var comboItem:ComboBox = {
+          value: item['value'],
+          label: item['label']
+        }
+        this.periodoList.push(comboItem);
+      });
+    });
   }
 }
 
