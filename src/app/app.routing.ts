@@ -94,4 +94,15 @@ export const AppRoutes: Routes = [
       },
     ],
   },
+  {
+    path: "",
+    // component: ,
+    children: [
+      {
+        path: "public",
+        loadChildren: () =>
+          import("./public-path/public-path.module").then((m) => m.PublicPathModule),
+      },
+    ],
+  },
 ];

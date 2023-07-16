@@ -8,9 +8,12 @@ import { FieldErrorDisplayComponent } from '../forms/validationforms/field-error
 import { BrMaskerModule } from 'br-mask';
 import { ClientesComponent } from './clientes.component';
 import { ClientesRoutes } from './clientes.routing';
+import { DadosClienteComponent } from './dados-cliente/dados-cliente.component';
+import { RelatorioClienteComponent } from '../components/relatorio-cliente/relatorio-cliente.component';
+import { PublicPathModule } from '../public-path/public-path.module';
 
 @NgModule({
-  declarations: [ClientesComponent],
+  declarations: [ClientesComponent, DadosClienteComponent],
   imports: [
     RouterModule.forChild(ClientesRoutes),
     CommonModule,
@@ -20,6 +23,7 @@ import { ClientesRoutes } from './clientes.routing';
     ReactiveFormsModule,
     FieldErrorDisplayComponent,
     BrMaskerModule,
+    RelatorioClienteComponent
   ],
 })
 export class ClientesModule {}

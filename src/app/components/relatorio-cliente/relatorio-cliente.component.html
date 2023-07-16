@@ -1,0 +1,279 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row" *ngIf="showFilters">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <h4 class="card-title">Dados Gerais - <b>{{cliente.nomeEmpresa}}</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <mat-form-field>
+                                    <mat-label>Período</mat-label>
+                                    <mat-select [(value)]="periodoSelecionado"
+                                    (selectionChange)="carregarDados(periodoSelecionado)">
+                                        <mat-option *ngFor="let item of periodoList" [value]="item.value">
+                                            {{item.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-9">
+                                Link relatório do cliente:
+                                  <button mat-raised-button class="btn btn-link btn-twitter" 
+                                  (click)="copyText(urlCliente)" matTooltip="Clique para copiar o link">
+                                    <i class="fa fa-link"></i> {{urlCliente}}
+                                  </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">insert_chart</i>
+                        </div>
+                        <h4 class="card-title">Dados de Resultado</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-success card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">mail</i>
+                                        </div>
+                                        <p class="card-category">FORMULÁRIOS PREENCHIDOS</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-success card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="fa fa-whatsapp"></i>
+                                        </div>
+                                        <p class="card-category">CONTATOS POR WHATSAPP</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-success card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">call</i>
+                                        </div>
+                                        <p class="card-category">LIGAÇÕES</p>
+                                        <h3 class="card-title">0000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-success card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">apps</i>
+                                        </div>
+                                        <p class="card-category">TOTAL DE CONTATOS</p>
+                                        <h3 class="card-title">0000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">apps</i>
+                                        </div>
+                                        <p class="card-category">MÉDIA CONTATOS POR DIA</p>
+                                        <h3 class="card-title">0000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">menu</i>
+                                        </div>
+                                        <p class="card-category">ANÚNCIOS / CONTATO</p>
+                                        <h3 class="card-title">0000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">contact_phone</i>
+                                        </div>
+                                        <p class="card-category">CLIQUES / CONTATO</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">trending_up</i>
+                                        </div>
+                                        <p class="card-category">% CONTATOS / ACESSOS</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-warning card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">attach_money</i>
+                                        </div>
+                                        <p class="card-category">CUSTO POR CONTATO</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-warning card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">ads_click</i>
+                                        </div>
+                                        <p class="card-category">CLIQUES PERSONALIZADOS LP</p>
+                                        <h3 class="card-title">000</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">query_stats</i>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title">Dados Estatísticos</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">menu</i>
+                                        </div>
+                                        <p class="card-category">QUANTIDADE DE ANÚNCIOS</p>
+                                        <h3 class="card-title">{{cliente.metric.impression}}</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">open_in_browser</i>
+                                        </div>
+                                        <p class="card-category">ACESSOS AO SITE</p>
+                                        <h3 class="card-title">{{cliente.metric.clicks}}</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">trending_up</i>
+                                        </div>
+                                        <p class="card-category">% ACESSOS / ANÚNCIOS (CTR)</p>
+                                        <h3 class="card-title"></h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-danger card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">close</i>
+                                        </div>
+                                        <p class="card-category">CLIQUES INVÁLIDOS</p>
+                                        <h3 class="card-title">{{cliente.metric.invalidClicks}}</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-warning card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">attach_money</i>
+                                        </div>
+                                        <p class="card-category">CUSTO TOTAL</p>
+                                        <h3 class="card-title">R$ {{cliente.metric.custoTotal}}</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-warning card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">attach_money</i>
+                                        </div>
+                                        <p class="card-category">CUSTO POR CLIQUE (CPC)</p>
+                                        <h3 class="card-title">R$ {{cliente.metric.cpc}}</h3>
+                                    </div>
+                                    <div class="card-footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

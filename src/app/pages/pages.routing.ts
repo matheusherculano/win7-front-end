@@ -12,7 +12,8 @@ export const PagesRoutes: Routes = [
         children: [ {
             path: 'login',
             component: LoginComponent
-        }, {
+        }, 
+         {
             path: 'lock',
             component: LockComponent
         }, {
