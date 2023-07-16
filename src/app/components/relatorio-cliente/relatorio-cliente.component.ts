@@ -1,14 +1,25 @@
-import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component, Input, OnInit } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { ActivatedRoute } from "@angular/router";
+import { MaterialModule } from "src/app/app.module";
 import { ClienteService } from "src/app/core/services/cliente.service";
 
+interface Food {
+  value: string;
+  viewValue: string;
+}
 @Component({
   standalone: true,
   selector: "app-relatorio-cliente",
   templateUrl: "./relatorio-cliente.component.html",
   styleUrls: ["./relatorio-cliente.component.css"],
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule]
 })
 export class RelatorioClienteComponent implements OnInit {
+  @Input() showFilters: boolean;
+
   cliente = {
     nomeEmpresa:"",
     metric:{
@@ -19,6 +30,12 @@ export class RelatorioClienteComponent implements OnInit {
       invalidClicks:""
     }
   };
+  selectedColor = null;
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'},
+  ];
 
   constructor(
     private clienteService: ClienteService,
