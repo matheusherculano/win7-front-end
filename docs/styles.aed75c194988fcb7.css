@@ -1870,6 +1870,9 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-end, body.swal2-toast-shown
 .mat-row:hover .mat-cell{
     background-color: #e3e3e3;
 }
+.cursor-pointer {
+    cursor: pointer;
+  }
 @charset "UTF-8";
 table.dataTable th.dt-left,
 table.dataTable td.dt-left {

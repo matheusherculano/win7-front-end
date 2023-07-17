@@ -3,11 +3,13 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ActivatedRoute, Router  } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import * as _ from "lodash";
 import { MaterialModule } from "src/app/app.module";
 import { ClienteService } from "src/app/core/services/cliente.service";
 import { ElementosTelaService } from "src/app/core/services/elementos-tela.service";
+import { AES, enc } from "crypto-js";
+import { environment } from "../../../../.history/src/environments/environment_20230717080346";
 
 interface ComboBox {
   value: string;
@@ -18,25 +20,25 @@ interface ComboBox {
   selector: "app-relatorio-cliente",
   templateUrl: "./relatorio-cliente.component.html",
   styleUrls: ["./relatorio-cliente.component.css"],
-  imports: [MaterialModule, ReactiveFormsModule, CommonModule]
+  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
 })
 export class RelatorioClienteComponent implements OnInit {
   @Input() showFilters: boolean;
 
   idCliente = this.activatedRoute.snapshot.params["idCliente"];
   cliente = {
-    nomeEmpresa:"",
-    metric:{
-      clicks:"",
-      cpc:"",
-      custoTotal:"",
-      impression:"",
-      invalidClicks:""
-    }
+    nomeEmpresa: "",
+    metric: {
+      clicks: "",
+      cpc: "",
+      custoTotal: "",
+      impression: "",
+      invalidClicks: "",
+    },
   };
   periodoSelecionado = "TODAY";
   periodoList: ComboBox[] = [];
-  linkPublicRelatorioCliente = "asd";
+  linkPublicRelatorioCliente = "";
   urlCliente = "";
 
   constructor(
@@ -51,45 +53,64 @@ export class RelatorioClienteComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDados(this.periodoSelecionado);
     this.carregarCombos();
-    
-    
   }
 
   public copyText(urlCliente) {
     navigator.clipboard.writeText(urlCliente);
-    this._snackBar.open("Link copiado!", "Ok")
+    this._snackBar.open("Link copiado!", "Ok");
   }
 
-  private obterUrlQueryParams(){
-    var queryParams = {
-      periodo: null,
-      public: false
-    };
-
-    this.activatedRoute.queryParams.subscribe(params => {
-      queryParams.periodo = params['periodo'];
-      queryParams.public = params['public'];
+  private obterUrlQueryParams() {
+    var urlObj = null;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      urlObj = {
+        public: params["public"],
+        stringEncrypted: params["obj"],
+      };
     });
+    return urlObj;
+  }
 
-    return queryParams;
+  private decrypt(stringEncrypted) {
+    const decryptedString = AES.decrypt(
+      stringEncrypted,
+      environment.encryptionKey
+    ).toString(enc.Utf8);
+    //decode URI remove o padrão de URL caracteres especiais
+    return JSON.parse(decodeURIComponent(decryptedString));
   }
 
   private carregarDados(periodo) {
-    if(this.idCliente != null){
-      if(this.obterUrlQueryParams().public){ //decidindo se pega o periodo da variavel de URL em caso de link public ou não
-        this.requisicoesHTTP(this.idCliente, this.obterUrlQueryParams().periodo);
-      }else{
+    if (this.idCliente != null) {
+      const queryParam = this.obterUrlQueryParams();
+      if (queryParam.public) {
+        const urlObj = this.decrypt(queryParam.stringEncrypted); //pegando obj crypt da variavel de url
+        this.requisicoesHTTP(this.idCliente, urlObj.periodo);
+      } else {
         this.requisicoesHTTP(this.idCliente, periodo);
+        this.montarUrlCliente(periodo);
       }
     }
-    this.montarUrlCliente(periodo);
-
   }
 
-  private montarUrlCliente(periodo){
-    var currentUrl =  window.location.href;
-    currentUrl = currentUrl.split('#')[0]; //removendo activeRoute atual
-    currentUrl = currentUrl + "#/public/relatorio-cliente/"+this.idCliente+"?periodo="+periodo+"&public=true";
+  private montarUrlCliente(periodo) {
+    //o objeto passado na URL é criptografado para as informações não ficarem expostas
+    var currentUrl = window.location.href;
+    var encryptionKey = environment.encryptionKey;
+    var urlObj = {
+      periodo: periodo,
+    };
+    var urlObjString = JSON.stringify(urlObj);
+    //encodeURI remove caracteres especiais do padrão URI
+    const encryptedString = encodeURIComponent(AES.encrypt(urlObjString, encryptionKey).toString()); 
+
+    currentUrl = currentUrl.split("#")[0]; //removendo activeRoute atual
+    currentUrl =
+      currentUrl +
+      "#/public/relatorio-cliente/" +
+      this.idCliente +
+      "?public=true&obj=" +
+      encryptedString;
     this.urlCliente = currentUrl;
   }
 
@@ -100,20 +121,22 @@ export class RelatorioClienteComponent implements OnInit {
       if (data["adwords"] != "") {
         var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
 
-        this.clienteService.getMetrics(costumerId, periodo).subscribe((metric) => {
-          this.cliente.metric = buildMetric(metric);;
-        });
+        this.clienteService
+          .getMetrics(costumerId, periodo)
+          .subscribe((metric) => {
+            this.cliente.metric = buildMetric(metric);
+          });
       }
     });
   }
 
-  private carregarCombos(){
-    this.elementosTelaService.getPeriodoAdsList().subscribe(data=>{
-      _.each(data, item=>{
-        var comboItem:ComboBox = {
-          value: item['value'],
-          label: item['label']
-        }
+  private carregarCombos() {
+    this.elementosTelaService.getPeriodoAdsList().subscribe((data) => {
+      _.each(data, (item) => {
+        var comboItem: ComboBox = {
+          value: item["value"],
+          label: item["label"],
+        };
         this.periodoList.push(comboItem);
       });
     });
@@ -122,26 +145,25 @@ export class RelatorioClienteComponent implements OnInit {
 
 function buildCliente(data) {
   return {
-    id:data.id,
-    nome:data.nome,
-    nomeEmpresa:data.nomeEmpresa,
-    metric:{
-      clicks:"",
-      cpc:"",
-      custoTotal:"",
-      impression:"",
-      invalidClicks:""
-    }
+    id: data.id,
+    nome: data.nome,
+    nomeEmpresa: data.nomeEmpresa,
+    metric: {
+      clicks: "",
+      cpc: "",
+      custoTotal: "",
+      impression: "",
+      invalidClicks: "",
+    },
   };
 }
 
-function buildMetric(metric){
+function buildMetric(metric) {
   return {
-    clicks:metric.clicks,
-    cpc:metric.cpc,
-    custoTotal:metric.custoTotal,
-    impression:metric.impression,
-    invalidClicks:metric.invalidClicks
-  }
+    clicks: metric.clicks,
+    cpc: metric.cpc,
+    custoTotal: metric.custoTotal,
+    impression: metric.impression,
+    invalidClicks: metric.invalidClicks,
+  };
 }
-

@@ -12,7 +12,7 @@
                                 <mat-form-field>
                                     <mat-label>Período</mat-label>
                                     <mat-select [(value)]="periodoSelecionado"
-                                    (selectionChange)="carregarDados(periodoSelecionado)">
+                                        (selectionChange)="carregarDados(periodoSelecionado)">
                                         <mat-option *ngFor="let item of periodoList" [value]="item.value">
                                             {{item.label}}
                                         </mat-option>
@@ -20,11 +20,8 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-9">
-                                Link relatório do cliente:
-                                  <button mat-raised-button class="btn btn-link btn-twitter" 
-                                  (click)="copyText(urlCliente)" matTooltip="Clique para copiar o link">
-                                    <i class="fa fa-link"></i> {{urlCliente}}
-                                  </button>
+                                Link relatório do cliente: <span class="cursor-pointer" (click)="copyText(urlCliente)"
+                                    matTooltip="Clique para copiar o link"><b>{{urlCliente}}</b></span>
                             </div>
                         </div>
                     </div>

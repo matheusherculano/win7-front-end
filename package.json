@@ -43,6 +43,7 @@
     "br-mask": "^0.0.10",
     "chartist": "0.11.4",
     "chartist-plugin-zoom": "0.6.0",
+    "crypto-js": "^4.1.1",
     "datatables": "1.10.18",
     "datatables.net-bs4": "1.11.5",
     "datatables.net-responsive": "2.2.9",
