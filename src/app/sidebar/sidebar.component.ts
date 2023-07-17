@@ -40,35 +40,35 @@ export const ROUTES: RouteInfo[] = [{
         type: 'link',
         icontype: 'person' 
     },
-    {
-        path: '/components',
-        title: 'Components',
-        type: 'sub',
-        icontype: 'apps',
-        collapse: 'components',
-        children: [
-            {path: 'buttons', title: 'Buttons', ab:'B'},
-            {path: 'grid', title: 'Grid System', ab:'GS'},
-            {path: 'panels', title: 'Panels', ab:'P'},
-            {path: 'sweet-alert', title: 'Sweet Alert', ab:'SA'},
-            {path: 'notifications', title: 'Notifications', ab:'N'},
-            {path: 'icons', title: 'Icons', ab:'I'},
-            {path: 'typography', title: 'Typography', ab:'T'}
-        ]
-    },
-    ,{
-        path: '/forms',
-        title: 'Forms',
-        type: 'sub',
-        icontype: 'content_paste',
-        collapse: 'forms',
-        children: [
-            {path: 'regular', title: 'Regular Forms', ab:'RF'},
-            {path: 'extended', title: 'Extended Forms', ab:'EF'},
-            {path: 'validation', title: 'Validation Forms', ab:'VF'},
-            {path: 'wizard', title: 'Wizard', ab:'W'}
-        ]
-    }
+    // {
+    //     path: '/components',
+    //     title: 'Components',
+    //     type: 'sub',
+    //     icontype: 'apps',
+    //     collapse: 'components',
+    //     children: [
+    //         {path: 'buttons', title: 'Buttons', ab:'B'},
+    //         {path: 'grid', title: 'Grid System', ab:'GS'},
+    //         {path: 'panels', title: 'Panels', ab:'P'},
+    //         {path: 'sweet-alert', title: 'Sweet Alert', ab:'SA'},
+    //         {path: 'notifications', title: 'Notifications', ab:'N'},
+    //         {path: 'icons', title: 'Icons', ab:'I'},
+    //         {path: 'typography', title: 'Typography', ab:'T'}
+    //     ]
+    // },
+    // ,{
+    //     path: '/forms',
+    //     title: 'Forms',
+    //     type: 'sub',
+    //     icontype: 'content_paste',
+    //     collapse: 'forms',
+    //     children: [
+    //         {path: 'regular', title: 'Regular Forms', ab:'RF'},
+    //         {path: 'extended', title: 'Extended Forms', ab:'EF'},
+    //         {path: 'validation', title: 'Validation Forms', ab:'VF'},
+    //         {path: 'wizard', title: 'Wizard', ab:'W'}
+    //     ]
+    // }
     // ,{
     //     path: '/tables',
     //     title: 'Tables',
