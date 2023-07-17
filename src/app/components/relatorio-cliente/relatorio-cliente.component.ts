@@ -10,6 +10,7 @@ import { ClienteService } from "src/app/core/services/cliente.service";
 import { ElementosTelaService } from "src/app/core/services/elementos-tela.service";
 import { AES, enc } from "crypto-js";
 import { environment } from "../../../../.history/src/environments/environment_20230717080346";
+import { metricList as metricListImport } from "./lista-metricas";
 
 interface ComboBox {
   value: string;
@@ -40,6 +41,8 @@ export class RelatorioClienteComponent implements OnInit {
   periodoList: ComboBox[] = [];
   linkPublicRelatorioCliente = "";
   urlCliente = "";
+  metricList = metricListImport;
+  metricasEscondidas = [];
 
   constructor(
     private clienteService: ClienteService,
@@ -58,6 +61,33 @@ export class RelatorioClienteComponent implements OnInit {
   public copyText(urlCliente) {
     navigator.clipboard.writeText(urlCliente);
     this._snackBar.open("Link copiado!", "Ok");
+  }
+
+  public esconderPorItemId(itemId){ //esconder elementos na tela baseado no lista-metricas.ts
+    const existe: boolean = !_.includes(this.metricasEscondidas, itemId);
+    return existe;
+  }
+
+  public montarUrlCliente(periodo, metricasEscondidas) {
+    //o objeto passado na URL é criptografado para as informações não ficarem expostas
+    var currentUrl = window.location.href;
+    var encryptionKey = environment.encryptionKey;
+    var urlObj = {
+      periodo: periodo,
+      metricasEscondidas: metricasEscondidas
+    };
+    var urlObjString = JSON.stringify(urlObj);
+    //encodeURI remove caracteres especiais do padrão URI
+    const encryptedString = encodeURIComponent(AES.encrypt(urlObjString, encryptionKey).toString()); 
+
+    currentUrl = currentUrl.split("#")[0]; //removendo activeRoute atual
+    currentUrl =
+      currentUrl +
+      "#/public/relatorio-cliente/" +
+      this.idCliente +
+      "?public=true&obj=" +
+      encryptedString;
+    this.urlCliente = currentUrl;
   }
 
   private obterUrlQueryParams() {
@@ -86,33 +116,14 @@ export class RelatorioClienteComponent implements OnInit {
       if (queryParam.public) {
         const urlObj = this.decrypt(queryParam.stringEncrypted); //pegando obj crypt da variavel de url
         this.requisicoesHTTP(this.idCliente, urlObj.periodo);
+        this.metricasEscondidas = urlObj.metricasEscondidas;
       } else {
         this.requisicoesHTTP(this.idCliente, periodo);
-        this.montarUrlCliente(periodo);
+        this.montarUrlCliente(periodo, this.metricasEscondidas);
       }
     }
   }
 
-  private montarUrlCliente(periodo) {
-    //o objeto passado na URL é criptografado para as informações não ficarem expostas
-    var currentUrl = window.location.href;
-    var encryptionKey = environment.encryptionKey;
-    var urlObj = {
-      periodo: periodo,
-    };
-    var urlObjString = JSON.stringify(urlObj);
-    //encodeURI remove caracteres especiais do padrão URI
-    const encryptedString = encodeURIComponent(AES.encrypt(urlObjString, encryptionKey).toString()); 
-
-    currentUrl = currentUrl.split("#")[0]; //removendo activeRoute atual
-    currentUrl =
-      currentUrl +
-      "#/public/relatorio-cliente/" +
-      this.idCliente +
-      "?public=true&obj=" +
-      encryptedString;
-    this.urlCliente = currentUrl;
-  }
 
   private requisicoesHTTP(idCliente, periodo) {
     this.clienteService.getClienteById(idCliente).subscribe((data) => {

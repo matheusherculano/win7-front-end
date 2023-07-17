@@ -14,12 +14,21 @@
                                     <mat-select [(value)]="periodoSelecionado"
                                         (selectionChange)="carregarDados(periodoSelecionado)">
                                         <mat-option *ngFor="let item of periodoList" [value]="item.value">
-                                            {{item.label}}
+                                            {{item.label}} 
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-9">
+                            <div class="col-3">
+                                <mat-form-field>
+                                    <mat-label>Esconder Métrica</mat-label>
+                                    <mat-select [(value)]="metricasEscondidas" 
+                                    (selectionChange)="montarUrlCliente(periodoSelecionado, metricasEscondidas)" multiple>
+                                      <mat-option *ngFor="let item of metricList" [value]="item.id">{{item.text}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field> 
+                            </div>
+                            <div class="col-6">
                                 Link relatório do cliente: <span class="cursor-pointer" (click)="copyText(urlCliente)"
                                     matTooltip="Clique para copiar o link"><b>{{urlCliente}}</b></span>
                             </div>
@@ -39,7 +48,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(1)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-success card-header-icon">
                                         <div class="card-icon">
@@ -52,7 +61,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(2)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-success card-header-icon">
                                         <div class="card-icon">
@@ -65,7 +74,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(3)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-success card-header-icon">
                                         <div class="card-icon">
@@ -78,7 +87,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(4)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-success card-header-icon">
                                         <div class="card-icon">
@@ -91,7 +100,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(5)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -104,7 +113,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(6)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -117,7 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(7)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -130,7 +139,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(8)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -143,7 +152,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(9)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-warning card-header-icon">
                                         <div class="card-icon">
@@ -156,7 +165,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(10)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-warning card-header-icon">
                                         <div class="card-icon">
@@ -189,7 +198,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(11)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -202,7 +211,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(12)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -215,7 +224,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(13)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-info card-header-icon">
                                         <div class="card-icon">
@@ -228,7 +237,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(14)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-danger card-header-icon">
                                         <div class="card-icon">
@@ -241,7 +250,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(15)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-warning card-header-icon">
                                         <div class="card-icon">
@@ -254,7 +263,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngIf="esconderPorItemId(16)">
                                 <div class="card card-stats">
                                     <div class="card-header card-header-warning card-header-icon">
                                         <div class="card-icon">
