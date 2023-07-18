@@ -1,6 +1,6 @@
-import { CommonModule, LocationStrategy } from "@angular/common";
+import { CommonModule, JsonPipe, LocationStrategy, NgIf } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -11,6 +11,8 @@ import { ElementosTelaService } from "src/app/core/services/elementos-tela.servi
 import { AES, enc } from "crypto-js";
 import { environment } from "../../../../.history/src/environments/environment_20230717080346";
 import { metricList as metricListImport } from "./lista-metricas";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 
 interface ComboBox {
   value: string;
@@ -21,7 +23,18 @@ interface ComboBox {
   selector: "app-relatorio-cliente",
   templateUrl: "./relatorio-cliente.component.html",
   styleUrls: ["./relatorio-cliente.component.css"],
-  imports: [MaterialModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    CommonModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    FormsModule,
+    NgIf,
+    JsonPipe,
+  ],
 })
 export class RelatorioClienteComponent implements OnInit {
   @Input() showFilters: boolean;
@@ -44,6 +57,11 @@ export class RelatorioClienteComponent implements OnInit {
   metricList = metricListImport;
   metricasEscondidas = [];
 
+  periodoDatas = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+
   constructor(
     private clienteService: ClienteService,
     private elementosTelaService: ElementosTelaService,
@@ -63,7 +81,8 @@ export class RelatorioClienteComponent implements OnInit {
     this._snackBar.open("Link copiado!", "Ok");
   }
 
-  public esconderPorItemId(itemId){ //esconder elementos na tela baseado no lista-metricas.ts
+  public esconderPorItemId(itemId) {
+    //esconder elementos na tela baseado no lista-metricas.ts
     const existe: boolean = !_.includes(this.metricasEscondidas, itemId);
     return existe;
   }
@@ -74,11 +93,13 @@ export class RelatorioClienteComponent implements OnInit {
     var encryptionKey = environment.encryptionKey;
     var urlObj = {
       periodo: periodo,
-      metricasEscondidas: metricasEscondidas
+      metricasEscondidas: metricasEscondidas,
     };
     var urlObjString = JSON.stringify(urlObj);
     //encodeURI remove caracteres especiais do padrão URI
-    const encryptedString = encodeURIComponent(AES.encrypt(urlObjString, encryptionKey).toString()); 
+    const encryptedString = encodeURIComponent(
+      AES.encrypt(urlObjString, encryptionKey).toString()
+    );
 
     currentUrl = currentUrl.split("#")[0]; //removendo activeRoute atual
     currentUrl =
@@ -110,6 +131,14 @@ export class RelatorioClienteComponent implements OnInit {
     return JSON.parse(decodeURIComponent(decryptedString));
   }
 
+  private carregarDadosPelaComboPeriodo(periodo) {
+    if (periodo == "PERSONALIZADO") {
+      console.log("Personalizado!");
+    } else {
+      this.carregarDados(periodo);
+    }
+  }
+
   private carregarDados(periodo) {
     if (this.idCliente != null) {
       const queryParam = this.obterUrlQueryParams();
@@ -123,7 +152,6 @@ export class RelatorioClienteComponent implements OnInit {
       }
     }
   }
-
 
   private requisicoesHTTP(idCliente, periodo) {
     this.clienteService.getClienteById(idCliente).subscribe((data) => {

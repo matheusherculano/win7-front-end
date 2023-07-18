@@ -6,7 +6,7 @@ import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import {MatNativeDateModule} from '@angular/material/core';
+import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -51,6 +51,8 @@ import { AppRoutes } from './app.routing';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import ptBr from '@angular/common/locales/pt';
+
+import { MAT_DATE_LOCALE} from '@angular/material/core';
 
 registerLocaleData(ptBr)
 
@@ -119,7 +121,9 @@ export class MaterialModule {}
       MatNativeDateModule,
       {
         provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true
-      }
+      },
+      { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
+  
     ],
     bootstrap:    [ AppComponent ]
 })

@@ -12,23 +12,47 @@
                                 <mat-form-field>
                                     <mat-label>Período</mat-label>
                                     <mat-select [(value)]="periodoSelecionado"
-                                        (selectionChange)="carregarDados(periodoSelecionado)">
+                                        (selectionChange)="carregarDadosPelaComboPeriodo(periodoSelecionado)">
                                         <mat-option *ngFor="let item of periodoList" [value]="item.value">
-                                            {{item.label}} 
+                                            {{item.label}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+
+                            <div class="col-3" *ngIf="periodoSelecionado == 'PERSONALIZADO'">
+                                <mat-form-field>
+                                    <mat-label>Selecione o período</mat-label>
+                                    <mat-date-range-input [formGroup]="periodoDatas" [rangePicker]="picker">
+                                      <input matStartDate formControlName="start" placeholder="Start date">
+                                      <input matEndDate formControlName="end" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix  [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                  
+                                    <mat-error *ngIf="periodoDatas.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                                    <mat-error *ngIf="periodoDatas.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                                  </mat-form-field>
+                                  
+                                  <p>Selected range: {{periodoDatas.value | json}}</p>
+                                  <p>periodoSelecionado: {{periodoSelecionado | json}}</p>
+                            </div>
+
                             <div class="col-3">
                                 <mat-form-field>
                                     <mat-label>Esconder Métrica</mat-label>
-                                    <mat-select [(value)]="metricasEscondidas" 
-                                    (selectionChange)="montarUrlCliente(periodoSelecionado, metricasEscondidas)" multiple>
-                                      <mat-option *ngFor="let item of metricList" [value]="item.id">{{item.text}}</mat-option>
+                                    <mat-select [(value)]="metricasEscondidas"
+                                        (selectionChange)="montarUrlCliente(periodoSelecionado, metricasEscondidas)"
+                                        multiple>
+                                        <mat-option *ngFor="let item of metricList"
+                                            [value]="item.id">{{item.text}}</mat-option>
                                     </mat-select>
-                                  </mat-form-field> 
+                                </mat-form-field>
                             </div>
-                            <div class="col-6">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
                                 Link relatório do cliente: <span class="cursor-pointer" (click)="copyText(urlCliente)"
                                     matTooltip="Clique para copiar o link"><b>{{urlCliente}}</b></span>
                             </div>
