@@ -132,10 +132,17 @@ export class RelatorioClienteComponent implements OnInit {
   }
 
   private carregarDadosPelaComboPeriodo(periodo) {
-    if (periodo == "PERSONALIZADO") {
-      this.carregarDados(this.periodoDatas);
+    if (periodo == "PERSONALIZADO") { // 
+      /* não carrega os dados pq não tem o periodo personalizado */
     } else {
       this.carregarDados(periodo);
+    }
+  }
+
+  private carregarDadosDataPersonalizada(event){
+    var datas = this.periodoDatas.value;
+    if(datas.start != null && datas.end != null){
+      this.carregarDados(datas);
     }
   }
 
@@ -160,7 +167,7 @@ export class RelatorioClienteComponent implements OnInit {
       if (data["adwords"] != "") {
         var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
 
-        if (periodo == "PERSONALIZADO") {
+        if (typeof periodo != "string") { // passando um periodo personalizado
           const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, null, periodo);
           this.clienteService
             .getMetrics(requestMetricsDTO)
