@@ -111,7 +111,7 @@ export class RelatorioClienteComponent implements OnInit {
     this.urlCliente = currentUrl;
   }
 
-  private obterUrlQueryParams() {
+  private obterUrlQueryParams() { // utilizado quando é link publico para o cliente
     var urlObj = null;
     this.activatedRoute.queryParams.subscribe((params) => {
       urlObj = {
@@ -133,7 +133,7 @@ export class RelatorioClienteComponent implements OnInit {
 
   private carregarDadosPelaComboPeriodo(periodo) {
     if (periodo == "PERSONALIZADO") {
-      console.log("Personalizado!");
+      this.carregarDados(this.periodoDatas);
     } else {
       this.carregarDados(periodo);
     }
@@ -160,13 +160,35 @@ export class RelatorioClienteComponent implements OnInit {
       if (data["adwords"] != "") {
         var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
 
-        this.clienteService
-          .getMetrics(costumerId, periodo)
-          .subscribe((metric) => {
-            this.cliente.metric = buildMetric(metric);
-          });
+        if (periodo == "PERSONALIZADO") {
+          const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, null, periodo);
+          this.clienteService
+            .getMetrics(requestMetricsDTO)
+            .subscribe((metric) => {
+              this.cliente.metric = buildMetric(metric);
+            });
+        }else{
+          const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, periodo, null);
+          this.clienteService
+            .getMetrics(requestMetricsDTO)
+            .subscribe((metric) => {
+              this.cliente.metric = buildMetric(metric);
+            });
+        }
+        
       }
     });
+  }
+
+  private buildRequestMetricsDTO(clienteId, adwords, periodoAds, periodoDatas){
+    const dto = {
+      clienteId: clienteId,
+      adwords: adwords,
+      periodoAds: periodoAds,
+      periodoInicial: periodoDatas != null ? periodoDatas.start : null,
+      periodoFinal: periodoDatas != null ?  periodoDatas.end : null
+    };
+    return dto;
   }
 
   private carregarCombos() {
@@ -199,10 +221,12 @@ function buildCliente(data) {
 
 function buildMetric(metric) {
   return {
-    clicks: metric.clicks,
-    cpc: metric.cpc,
-    custoTotal: metric.custoTotal,
-    impression: metric.impression,
-    invalidClicks: metric.invalidClicks,
+    formularios:metric.formularios,
+    whatsapp:metric.whatsapp,
+    clicks: metric.ads.clicks,
+    cpc: metric.ads.cpc,
+    custoTotal: metric.ads.custoTotal,
+    impression: metric.ads.impression,
+    invalidClicks: metric.ads.invalidClicks,
   };
 }

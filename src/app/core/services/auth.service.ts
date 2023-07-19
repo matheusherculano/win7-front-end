@@ -1,70 +1,74 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import * as _ from 'lodash';
-import { Observable, catchError, delay, map } from 'rxjs';
-import { environment } from 'src/environments/environment';
-
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import * as _ from "lodash";
+import { Observable, catchError, delay, map } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-
   public roles = [];
-  public usuarioLogado = {nome:"", usuario:""};
+  public usuarioLogado = { nome: "", usuario: "" };
 
-  constructor(private httpCliente: HttpClient, private router:Router) {
-    
-   }
+  constructor(private httpCliente: HttpClient, private router: Router) {}
 
-  public logar(ambiente: string, usuario: string, senha: string): Observable<any> {
-    const url = `${environment.baseUrlBackend}/auth/login`
+  public logar(
+    ambiente: string,
+    usuario: string,
+    senha: string
+  ): Observable<any> {
+    const url = `${environment.baseUrlBackend}/auth/login`;
 
-    return this.httpCliente.post(url, {ambiente, usuario, senha }, { responseType: 'text' }).pipe(
-      map((data) => {
-        console.log("a",data)
-        this.setTokenLocalStorage(data)
-        
-      }),
-      catchError((err) => {
-        this.removerTokenLocalStorage();
-        throw err.error
-      })
-    )
+    return this.httpCliente
+      .post(url, { ambiente, usuario, senha }, { responseType: "text" })
+      .pipe(
+        map((data) => {
+          this.setTokenLocalStorage(data);
+        }),
+        catchError((err) => {
+          this.removerTokenLocalStorage();
+          if (typeof err.error === "string") {
+            throw err.error;
+          } else {
+            throw err.message;
+          }
+        })
+      );
   }
 
   public getUserPrincipal(): Observable<any> {
-    const url = `${environment.baseUrlBackend}/auth/userprincipal`
+    const url = `${environment.baseUrlBackend}/auth/userprincipal`;
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
-    })
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.getToken()}`,
+    });
 
     return this.httpCliente.get(url, { headers }).pipe(
       map((data) => {
-        this.setRolesInContext(data['authorities'])
-        this.usuarioLogado.usuario = data['username'];
-        this.usuarioLogado.nome = data['username'][0].toUpperCase() + data['username'].substring(1);
+        this.setRolesInContext(data["authorities"]);
+        this.usuarioLogado.usuario = data["username"];
+        this.usuarioLogado.nome =
+          data["username"][0].toUpperCase() + data["username"].substring(1);
         return true;
       }),
       catchError((err) => {
         this.removerTokenLocalStorage();
-        throw err.error
+        throw err.error;
       })
-    )
+    );
   }
 
+  isAutorizado() {}
 
-  isAutorizado() { }
- 
-  public getToken():string | null{
+  public getToken(): string | null {
     return localStorage.getItem(environment.token);
   }
 
-  private setRolesInContext(authorities){
-    this.roles = _.map(authorities, 'authority');
+  private setRolesInContext(authorities) {
+    this.roles = _.map(authorities, "authority");
   }
 
   public removerTokenLocalStorage(): void {

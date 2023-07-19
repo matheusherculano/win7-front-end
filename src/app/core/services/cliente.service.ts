@@ -47,15 +47,15 @@ export class ClienteService {
     );
   }
 
-  public getMetrics(adwords, periodo) {
-    const url = `${environment.baseUrlBackend}/cliente/metrics/${adwords}`;
+  public getMetrics(requestMetricsDTO) {
+    const url = `${environment.baseUrlBackend}/cliente/metrics`;
 
-    const params = new HttpParams().set("periodo", periodo);
+    // const params = new HttpParams().set("periodo", periodo);
 
     return this.httpCliente
-      .get(url, {
+      .post(url, requestMetricsDTO, {
         headers: this.getHeaders(),
-        params: params,
+        // params: params,
       })
       .pipe(
         map((data) => {

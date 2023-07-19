@@ -45,9 +45,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   logar() {
     const { ambiente, usuario, senha } = this.formLogin.value;
 
-    // this.authService.getUserPrincipal().subscribe(resp=>{
-    // },err=>{});
-
     this.authService.logar(ambiente, usuario, senha).subscribe(
       (resp) => {
         this.router.navigate(["dashboard"]);
