@@ -78,7 +78,7 @@
                                             <i class="material-icons">mail</i>
                                         </div>
                                         <p class="card-category">FORMULÁRIOS PREENCHIDOS</p>
-                                        <h3 class="card-title">{{cliente.metric.formularios}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.formularios | number}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -91,7 +91,7 @@
                                             <i class="fa fa-whatsapp"></i>
                                         </div>
                                         <p class="card-category">CONTATOS POR WHATSAPP</p>
-                                        <h3 class="card-title">{{cliente.metric.whatsapp}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.whatsapp | number}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -228,7 +228,7 @@
                                             <i class="material-icons">menu</i>
                                         </div>
                                         <p class="card-category">QUANTIDADE DE ANÚNCIOS</p>
-                                        <h3 class="card-title">{{cliente.metric.impression}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.impression | number}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -241,7 +241,7 @@
                                             <i class="material-icons">open_in_browser</i>
                                         </div>
                                         <p class="card-category">ACESSOS AO SITE</p>
-                                        <h3 class="card-title">{{cliente.metric.clicks}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.clicks | number}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -267,7 +267,7 @@
                                             <i class="material-icons">close</i>
                                         </div>
                                         <p class="card-category">CLIQUES INVÁLIDOS</p>
-                                        <h3 class="card-title">{{cliente.metric.invalidClicks}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.invalidClicks | number}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -280,7 +280,7 @@
                                             <i class="material-icons">attach_money</i>
                                         </div>
                                         <p class="card-category">CUSTO TOTAL</p>
-                                        <h3 class="card-title">R$ {{cliente.metric.custoTotal}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.custoTotal | currency: 'BRL'}}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -293,7 +293,7 @@
                                             <i class="material-icons">attach_money</i>
                                         </div>
                                         <p class="card-category">CUSTO POR CLIQUE (CPC)</p>
-                                        <h3 class="card-title">R$ {{cliente.metric.cpc}}</h3>
+                                        <h3 class="card-title">{{cliente.metric.cpc | currency: 'BRL' }}</h3>
                                     </div>
                                     <div class="card-footer">
                                     </div>
