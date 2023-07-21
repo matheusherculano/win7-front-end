@@ -43,11 +43,14 @@ export class RelatorioClienteComponent implements OnInit {
   cliente = {
     nomeEmpresa: "",
     metric: {
+      formularios:0,
+      whatsapp:0,
+      ligacoes:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
       impression: "",
-      invalidClicks: "",
+      invalidClicks: ""
     },
   };
   periodoSelecionado = "TODAY";
@@ -56,6 +59,7 @@ export class RelatorioClienteComponent implements OnInit {
   urlCliente = "";
   metricList = metricListImport;
   metricasEscondidas = [];
+  totalContatos = 0;
 
   periodoDatas = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -109,6 +113,8 @@ export class RelatorioClienteComponent implements OnInit {
       "?public=true&obj=" +
       encryptedString;
     this.urlCliente = currentUrl;
+
+    this.somarTotalContatos(); // atualizando o valor total caso tenha item alterado
   }
 
   private obterUrlQueryParams() { // utilizado quando é link publico para o cliente
@@ -173,6 +179,7 @@ export class RelatorioClienteComponent implements OnInit {
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
               this.cliente.metric = buildMetric(metric);
+              this.somarTotalContatos();
             });
         }else{
           const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, periodo, null);
@@ -180,11 +187,24 @@ export class RelatorioClienteComponent implements OnInit {
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
               this.cliente.metric = buildMetric(metric);
+              this.somarTotalContatos();
             });
         }
         
       }
     });
+  }
+
+  private somarTotalContatos(){
+    var formularios:number = 0;
+    var whatsapp:number = 0;
+    var ligacoes:number = 0;
+
+   formularios = !_.includes(this.metricasEscondidas, 1) == true ? this.cliente.metric.formularios : 0;
+   whatsapp = !_.includes(this.metricasEscondidas, 2) == true ? this.cliente.metric.whatsapp : 0;
+   ligacoes = !_.includes(this.metricasEscondidas, 3) == true ? this.cliente.metric.ligacoes : 0;
+
+   this.totalContatos = _.sum([formularios, whatsapp, ligacoes]);
   }
 
   private buildRequestMetricsDTO(clienteId, adwords, periodoAds, periodoDatas){
@@ -217,6 +237,9 @@ function buildCliente(data) {
     nome: data.nome,
     nomeEmpresa: data.nomeEmpresa,
     metric: {
+      formularios:0,
+      whatsapp:0,
+      ligacoes:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -230,6 +253,7 @@ function buildMetric(metric) {
   return {
     formularios:metric.formularios,
     whatsapp:metric.whatsapp,
+    ligacoes:0,
     clicks: metric.ads.clicks,
     cpc: metric.ads.cpc,
     custoTotal: metric.ads.custoTotal,
