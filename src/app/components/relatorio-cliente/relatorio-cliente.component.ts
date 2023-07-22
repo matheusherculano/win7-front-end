@@ -1,6 +1,16 @@
-import { CommonModule, JsonPipe, LocationStrategy, NgIf } from "@angular/common";
+import {
+  CommonModule,
+  JsonPipe,
+  LocationStrategy,
+  NgIf,
+} from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -13,6 +23,7 @@ import { environment } from "../../../../.history/src/environments/environment_2
 import { metricList as metricListImport } from "./lista-metricas";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { calculateNumberOfDays } from "src/app/core/util/util";
 
 interface ComboBox {
   value: string;
@@ -43,14 +54,14 @@ export class RelatorioClienteComponent implements OnInit {
   cliente = {
     nomeEmpresa: "",
     metric: {
-      formularios:0,
-      whatsapp:0,
-      ligacoes:0,
+      formularios: 0,
+      whatsapp: 0,
+      ligacoes: 0,
       clicks: "",
       cpc: "",
       custoTotal: "",
       impression: "",
-      invalidClicks: ""
+      invalidClicks: "",
     },
   };
   periodoSelecionado = "TODAY";
@@ -117,7 +128,8 @@ export class RelatorioClienteComponent implements OnInit {
     this.somarTotalContatos(); // atualizando o valor total caso tenha item alterado
   }
 
-  private obterUrlQueryParams() { // utilizado quando é link publico para o cliente
+  private obterUrlQueryParams() {
+    // utilizado quando é link publico para o cliente
     var urlObj = null;
     this.activatedRoute.queryParams.subscribe((params) => {
       urlObj = {
@@ -138,16 +150,19 @@ export class RelatorioClienteComponent implements OnInit {
   }
 
   private carregarDadosPelaComboPeriodo(periodo) {
-    if (periodo == "PERSONALIZADO") { // 
+    if (periodo == "PERSONALIZADO") {
+      //
       /* não carrega os dados pq não tem o periodo personalizado */
     } else {
       this.carregarDados(periodo);
+      
+      calculateNumberOfDays(periodo);
     }
   }
 
-  private carregarDadosDataPersonalizada(event){
+  private carregarDadosDataPersonalizada(event) {
     var datas = this.periodoDatas.value;
-    if(datas.start != null && datas.end != null){
+    if (datas.start != null && datas.end != null) {
       this.carregarDados(datas);
     }
   }
@@ -173,16 +188,27 @@ export class RelatorioClienteComponent implements OnInit {
       if (data["adwords"] != "") {
         var costumerId = data["adwords"].replace(/-/g, ""); //removendo os - "traço"
 
-        if (typeof periodo != "string") { // passando um periodo personalizado
-          const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, null, periodo);
+        if (typeof periodo != "string") {
+          // passando um periodo personalizado
+          const requestMetricsDTO = this.buildRequestMetricsDTO(
+            idCliente,
+            costumerId,
+            null,
+            periodo
+          );
           this.clienteService
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
               this.cliente.metric = buildMetric(metric);
               this.somarTotalContatos();
             });
-        }else{
-          const requestMetricsDTO = this.buildRequestMetricsDTO(idCliente, costumerId, periodo, null);
+        } else {
+          const requestMetricsDTO = this.buildRequestMetricsDTO(
+            idCliente,
+            costumerId,
+            periodo,
+            null
+          );
           this.clienteService
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
@@ -190,30 +216,42 @@ export class RelatorioClienteComponent implements OnInit {
               this.somarTotalContatos();
             });
         }
-        
       }
     });
   }
 
-  private somarTotalContatos(){
-    var formularios:number = 0;
-    var whatsapp:number = 0;
-    var ligacoes:number = 0;
+  private somarTotalContatos() {
+    var formularios: number = 0;
+    var whatsapp: number = 0;
+    var ligacoes: number = 0;
 
-   formularios = !_.includes(this.metricasEscondidas, 1) == true ? this.cliente.metric.formularios : 0;
-   whatsapp = !_.includes(this.metricasEscondidas, 2) == true ? this.cliente.metric.whatsapp : 0;
-   ligacoes = !_.includes(this.metricasEscondidas, 3) == true ? this.cliente.metric.ligacoes : 0;
+    formularios =
+      !_.includes(this.metricasEscondidas, 1) == true
+        ? this.cliente.metric.formularios
+        : 0;
+    whatsapp =
+      !_.includes(this.metricasEscondidas, 2) == true
+        ? this.cliente.metric.whatsapp
+        : 0;
+    ligacoes =
+      !_.includes(this.metricasEscondidas, 3) == true
+        ? this.cliente.metric.ligacoes
+        : 0;
 
-   this.totalContatos = _.sum([formularios, whatsapp, ligacoes]);
+    this.totalContatos = _.sum([formularios, whatsapp, ligacoes]);
   }
 
-  private buildRequestMetricsDTO(clienteId, adwords, periodoAds, periodoDatas){
+  private mediaContatosPorDia() {
+    //TODO
+  }
+
+  private buildRequestMetricsDTO(clienteId, adwords, periodoAds, periodoDatas) {
     const dto = {
       clienteId: clienteId,
       adwords: adwords,
       periodoAds: periodoAds,
       periodoInicial: periodoDatas != null ? periodoDatas.start : null,
-      periodoFinal: periodoDatas != null ?  periodoDatas.end : null
+      periodoFinal: periodoDatas != null ? periodoDatas.end : null,
     };
     return dto;
   }
@@ -237,9 +275,9 @@ function buildCliente(data) {
     nome: data.nome,
     nomeEmpresa: data.nomeEmpresa,
     metric: {
-      formularios:0,
-      whatsapp:0,
-      ligacoes:0,
+      formularios: 0,
+      whatsapp: 0,
+      ligacoes: 0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -251,9 +289,9 @@ function buildCliente(data) {
 
 function buildMetric(metric) {
   return {
-    formularios:metric.formularios,
-    whatsapp:metric.whatsapp,
-    ligacoes:0,
+    formularios: metric.formularios,
+    whatsapp: metric.whatsapp,
+    ligacoes: 0,
     clicks: metric.ads.clicks,
     cpc: metric.ads.cpc,
     custoTotal: metric.ads.custoTotal,
@@ -261,3 +299,5 @@ function buildMetric(metric) {
     invalidClicks: metric.ads.invalidClicks,
   };
 }
+
+
