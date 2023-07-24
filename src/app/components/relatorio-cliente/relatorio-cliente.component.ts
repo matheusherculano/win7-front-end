@@ -57,6 +57,10 @@ export class RelatorioClienteComponent implements OnInit {
       formularios: 0,
       whatsapp: 0,
       ligacoes: 0,
+      anunciosPorContato:0,
+      cliquesPorContato:0,
+      custoPorContato:0,
+      taxaConversao:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -64,7 +68,7 @@ export class RelatorioClienteComponent implements OnInit {
       invalidClicks: "",
     },
   };
-  periodoSelecionado = "TODAY";
+  periodoSelecionado = "THIS_MONTH";
   periodoList: ComboBox[] = [];
   linkPublicRelatorioCliente = "";
   urlCliente = "";
@@ -278,6 +282,10 @@ function buildCliente(data) {
       formularios: 0,
       whatsapp: 0,
       ligacoes: 0,
+      anunciosPorContato:0,
+      cliquesPorContato:0,
+      taxaConversao:0,
+      custoPorContato:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -288,10 +296,16 @@ function buildCliente(data) {
 }
 
 function buildMetric(metric) {
+  const totalContatos = metric.formularios + metric.whatsapp + metric.ligacoes;
+
   return {
     formularios: metric.formularios,
     whatsapp: metric.whatsapp,
-    ligacoes: 0,
+    ligacoes: metric.ligacoes,
+    anunciosPorContato: metric.ads.impression / totalContatos,
+    cliquesPorContato: metric.ads.clicks / totalContatos,
+    taxaConversao: (totalContatos * 100) / metric.ads.clicks,
+    custoPorContato:metric.ads.custoTotal / totalContatos,
     clicks: metric.ads.clicks,
     cpc: metric.ads.cpc,
     custoTotal: metric.ads.custoTotal,
