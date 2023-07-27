@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  baseUrlBackend: 'http://localhost:9001',
+  baseUrlBackend: 'http://localhost:5963',
   token: 'token',
   encryptionKey : 'Xpt119@#41w23!?'
 };
