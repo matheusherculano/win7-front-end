@@ -61,6 +61,7 @@ export class RelatorioClienteComponent implements OnInit {
       cliquesPorContato:0,
       custoPorContato:0,
       taxaConversao:0,
+      contatosPorDia:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -160,7 +161,7 @@ export class RelatorioClienteComponent implements OnInit {
     } else {
       this.carregarDados(periodo);
       
-      calculateNumberOfDays(periodo);
+      // calculateNumberOfDays(periodo);
     }
   }
 
@@ -203,7 +204,7 @@ export class RelatorioClienteComponent implements OnInit {
           this.clienteService
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
-              this.cliente.metric = buildMetric(metric);
+              this.cliente.metric = buildMetric(metric, metric['qtdDiasFiltrados']);
               this.somarTotalContatos();
             });
         } else {
@@ -216,7 +217,7 @@ export class RelatorioClienteComponent implements OnInit {
           this.clienteService
             .getMetrics(requestMetricsDTO)
             .subscribe((metric) => {
-              this.cliente.metric = buildMetric(metric);
+              this.cliente.metric = buildMetric(metric, metric['qtdDiasFiltrados']);
               this.somarTotalContatos();
             });
         }
@@ -286,6 +287,7 @@ function buildCliente(data) {
       cliquesPorContato:0,
       taxaConversao:0,
       custoPorContato:0,
+      contatosPorDia:0,
       clicks: "",
       cpc: "",
       custoTotal: "",
@@ -295,7 +297,7 @@ function buildCliente(data) {
   };
 }
 
-function buildMetric(metric) {
+function buildMetric(metric, qtdDiasFiltrados) {
   const totalContatos = metric.formularios + metric.whatsapp + metric.ligacoes;
 
   return {
@@ -306,6 +308,7 @@ function buildMetric(metric) {
     cliquesPorContato: metric.ads.clicks / totalContatos,
     taxaConversao: (totalContatos * 100) / metric.ads.clicks,
     custoPorContato:metric.ads.custoTotal / totalContatos,
+    contatosPorDia: totalContatos / qtdDiasFiltrados,
     clicks: metric.ads.clicks,
     cpc: metric.ads.cpc,
     custoTotal: metric.ads.custoTotal,
