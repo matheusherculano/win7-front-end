@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrlBackend: 'https://15.235.55.109:5963',
+  baseUrlBackend: 'https://firewin12337.c34.integrator.host:5963',
   token: 'token'
 };
