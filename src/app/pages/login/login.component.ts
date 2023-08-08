@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/core/services/auth.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 declare var $: any;
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private toggleButton: any;
   private sidebarVisible: boolean;
   private nativeElement: Node;
+  public versionFrontEnd = environment.version;
 
   public formLogin: FormGroup;
 
